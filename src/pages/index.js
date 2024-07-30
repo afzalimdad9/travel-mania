@@ -1,16 +1,14 @@
+import LocationCard from "@/Components/LocationCard";
+import { Inter } from "next/font/google";
 import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google"; 
-import Header from "@/Components/Header/Header";
-import Layout from "../layout/index"
-import HomeBanner from "../Components/HomeBanner"
 import BannerForm from "../Components/BannerForm/BannerForm";
+import CounterCard from "../Components/CounterCard";
+import DestinationCard from "../Components/DestinationCard";
+import FlightCard from "../Components/FlightCard";
+import HomeBanner from "../Components/HomeBanner";
+import HotelBook from "../Components/HotelBook";
 import PlaneTrip from "../Components/PlaneTrip/PlaneTrip";
-import HotelBook from "../Components/HotelBook"
-import DestinationCard from "../Components/DestinationCard"
-import CounterCard from "../Components/CounterCard"
-import FlightCard from "../Components/FlightCard"
-
+import Layout from "../layout/index";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,15 +22,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <HomeBanner/>
-        <BannerForm/>
-        <PlaneTrip/>
-        <HotelBook/>
-        <DestinationCard/>
-        <CounterCard/>
-        <FlightCard/>
+        <HomeBanner />
+        <BannerForm />
+        <PlaneTrip />
+        <HotelBook />
+        <DestinationCard />
+        <CounterCard />
+        <FlightCard />
+        <LocationCard />
       </Layout>
-     
     </>
   );
 }
