@@ -39,15 +39,6 @@ const interests = [
 const ExploreByInterests = () => {
   return (
     <Container className="mt-5">
-      <div className="sign-in-banner mb-4 p-3">
-        <p className="mb-1">
-          <strong>Sign in to save time</strong>
-        </p>
-        <p>Your Travel Mania account lets you book using your saved details</p>
-        <a className="btn btn-primary text-white" href="/signin">
-          Sign in
-        </a>
-      </div>
       <Row>
         <Col lg={4} className="mb-4">
           <h6 className="section-title mb-3">Explore by interests</h6>

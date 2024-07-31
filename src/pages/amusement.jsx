@@ -10,6 +10,7 @@ import CounterCard from "../Components/CounterCard";
 import DestinationCard from "../Components/DestinationCard";
 import FlightCard from "../Components/FlightCard";
 import LocationCard from "../Components/LocationCard";
+import Signin from "@/Components/Signin";
 
 const amusement = () => {
   return (
@@ -26,6 +27,7 @@ const amusement = () => {
         {/* <PlaneTrip /> */}
         {/* <HotelBook /> */}
         <DestinationCard />
+        <Signin />
         <ExploreByInterests />
         <CounterCard />
         <FlightCard />
