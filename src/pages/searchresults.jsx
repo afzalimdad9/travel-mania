@@ -3,8 +3,8 @@ import Head from "next/head";
 import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import BannerForm from "../Components/BannerForm/BannerForm";
-import AmusementBanner from "../components/AmusementBanner";
 import Layout from "../layout/index";
+import AmusementBanner from "../Components/AmusementBanner/index";
 
 const searchResults = [
   {
