@@ -1,4 +1,4 @@
-import LocationCard from "@/Components/LocationCard";
+import LocationCard from "../Components/LocationCard";
 import { Inter } from "next/font/google";
 import Head from "next/head";
 import BannerForm from "../Components/BannerForm/BannerForm";

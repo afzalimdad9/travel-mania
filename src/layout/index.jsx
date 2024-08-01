@@ -1,11 +1,11 @@
 import React from "react";
-import Header from "@/Components/Header/Header";
-import Footer from "@/Components/Footer/Footer";
+import Header from "../Components/Header/Header";
+import Footer from "../Components/Footer/Footer";
 
-const index = ({children , noBanner}) => {
+const index = ({ children, noBanner }) => {
   return (
     <>
-      <Header noBanner={noBanner}/>
+      <Header noBanner={noBanner} />
       {children}
       <Footer />
     </>

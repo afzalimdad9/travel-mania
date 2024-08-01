@@ -1,4 +1,4 @@
-import Signin from "@/Components/Signin";
+import Signin from "../Components/Signin";
 import Head from "next/head";
 import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";

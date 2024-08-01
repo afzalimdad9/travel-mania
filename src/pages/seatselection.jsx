@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import Layout from "../layout/index";
-import InnerBanner from "@/Components/InnerBanner/InnerBanner";
+import InnerBanner from "../Components/InnerBanner/InnerBanner";
 import Image from "next/image";
 import Accordion from "react-bootstrap/Accordion";
 import { IoMdCheckmark } from "react-icons/io";
@@ -161,8 +161,12 @@ const seatselection = () => {
 
                               <div className="seat-center-mn">
                                 <ul className="seat-numbers">
-                                    <li><p>01</p></li>
-                                    <li><p>02</p></li>
+                                  <li>
+                                    <p>01</p>
+                                  </li>
+                                  <li>
+                                    <p>02</p>
+                                  </li>
                                 </ul>
                                 <div>
                                   <ul className="seat-alpha">

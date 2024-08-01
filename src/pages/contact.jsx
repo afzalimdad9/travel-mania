@@ -1,4 +1,4 @@
-import InnerBanner from "@/Components/InnerBanner/InnerBanner";
+import InnerBanner from "../Components/InnerBanner/InnerBanner";
 import Head from "next/head";
 import React from "react";
 import Layout from "../layout/index";
@@ -6,15 +6,16 @@ import Link from "next/link";
 import { GoMail } from "react-icons/go";
 import { BsTelephone } from "react-icons/bs";
 import { SlLocationPin } from "react-icons/sl";
-import Image from "next/image"; 
+import Image from "next/image";
 
 const data = [
-    {
-      eyeBrow: "Contact",
-      title: "We're always available to talk.",
-      imageUrl: "/images/contact-banner.png",
-    },
-  ];
+  {
+    eyeBrow: "Contact",
+    title: "We're always available to talk.",
+    imageUrl: "/images/contact-banner.png",
+  },
+];
+
 const contact = () => {
   return (
     <>
@@ -25,81 +26,91 @@ const contact = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <InnerBanner data={data} /> 
+        <InnerBanner data={data} />
 
         <section className="contact-sec">
           <div className="container">
-          <div className="row">
-            <div className="col-md-6 centerCol">
+            <div className="row">
+              <div className="col-md-6 centerCol">
                 <div className="uni-head">
-                <h4>Contact With Us</h4></div>
+                  <h4>Contact With Us</h4>
+                </div>
+              </div>
             </div>
-          </div>
             <div className="row">
               <div className="col-sm-12 col-md-6">
                 <div className="contact-detail">
-                    <h4>Get In Touch</h4>
-                    <p>Please let us know if you have any questions or concerns and we will get back to you</p>
-                    <ul>
-                        <li>
-                            <GoMail />
-                            <Link href={'mailto:marketing@example.com'}>
-                                <h6>Email Address</h6>
-                                <p>marketing@example.com</p>
-                            </Link>
-                        </li>
-                        <li>
-                            <BsTelephone />
-                            <Link href={'tel:344555432236'}>
-                                <h6>Phone number</h6>
-                                <p>+34-455-5432-236</p>
-                            </Link>
-                        </li>
-                        <li>
-                            <SlLocationPin />
-                            <Link href={'/'}>
-                                <h6>Location</h6>
-                                <p>2464 Royal Ln. Mesa, New Jersey 45463</p>
-                            </Link>
-                        </li>
-                    </ul>
-                    <Image width={385} height={275} src="/images/contact-detail-img.png" alt="img" />
+                  <h4>Get In Touch</h4>
+                  <p>
+                    Please let us know if you have any questions or concerns and
+                    we will get back to you
+                  </p>
+                  <ul>
+                    <li>
+                      <GoMail />
+                      <Link href={"mailto:marketing@example.com"}>
+                        <h6>Email Address</h6>
+                        <p>marketing@example.com</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <BsTelephone />
+                      <Link href={"tel:344555432236"}>
+                        <h6>Phone number</h6>
+                        <p>+34-455-5432-236</p>
+                      </Link>
+                    </li>
+                    <li>
+                      <SlLocationPin />
+                      <Link href={"/"}>
+                        <h6>Location</h6>
+                        <p>2464 Royal Ln. Mesa, New Jersey 45463</p>
+                      </Link>
+                    </li>
+                  </ul>
+                  <Image
+                    width={385}
+                    height={275}
+                    src="/images/contact-detail-img.png"
+                    alt="img"
+                  />
                 </div>
               </div>
               <div className="col-sm-12 col-md-6">
                 <div className="contact-form">
-                    <h4>Send A Message</h4>
-                    <form action="#">
-                        <div>
-                            <label>Full Name</label>
-                            <input type="text" required />
-                        </div>
-                        <div>
-                            <label>Phone</label>
-                            <input type="tel" required />
-                        </div>
-                        <div>
-                            <label>Email</label>
-                            <input type="email" required />
-                        </div>
-                        <div>
-                            <label>Email</label>
-                            <input type="email" required />
-                        </div>
-                        <div>
-                            <label>Message</label>
-                            <textarea rows={5}></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" className="btn10">Send Message</button>
-                        </div>
-                    </form>
+                  <h4>Send A Message</h4>
+                  <form action="#">
+                    <div>
+                      <label>Full Name</label>
+                      <input type="text" required />
+                    </div>
+                    <div>
+                      <label>Phone</label>
+                      <input type="tel" required />
+                    </div>
+                    <div>
+                      <label>Email</label>
+                      <input type="email" required />
+                    </div>
+                    <div>
+                      <label>Email</label>
+                      <input type="email" required />
+                    </div>
+                    <div>
+                      <label>Message</label>
+                      <textarea rows={5}></textarea>
+                    </div>
+                    <div>
+                      <button type="submit" className="btn10">
+                        Send Message
+                      </button>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </section>
-
       </Layout>
     </>
   );

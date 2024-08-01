@@ -2,15 +2,15 @@ import Head from "next/head";
 import AmusementBanner from "../Components/AmusementBanner";
 import Layout from "../layout/index";
 
-import LatestTravelBlog from "@/Components/Blog";
-import ExploreByInterests from "@/Components/ExploreByInterests";
-import RecommendationsSection from "@/Components/Recommendations";
+import LatestTravelBlog from "../Components/Blog";
+import ExploreByInterests from "../Components/ExploreByInterests";
+import RecommendationsSection from "../Components/Recommendations";
 import BannerForm from "../Components/BannerForm/BannerForm";
 import CounterCard from "../Components/CounterCard";
 import DestinationCard from "../Components/DestinationCard";
 import FlightCard from "../Components/FlightCard";
 import LocationCard from "../Components/LocationCard";
-import Signin from "@/Components/Signin";
+import Signin from "../Components/Signin";
 
 const amusement = () => {
   return (

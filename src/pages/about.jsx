@@ -1,11 +1,11 @@
-import InnerBanner from "@/Components/InnerBanner/InnerBanner";
+import InnerBanner from "../Components/InnerBanner/InnerBanner";
 import Head from "next/head";
 import React from "react";
 import Layout from "../layout/index";
 import Image from "next/image";
 import Link from "next/link";
-import SameLessTravel from "@/Components/SameLessTravel/SameLessTravel";
-import OurMission from "@/Components/OurMission/OurMission";
+import SameLessTravel from "../Components/SameLessTravel/SameLessTravel";
+import OurMission from "../Components/OurMission/OurMission";
 
 const data = [
   {
@@ -101,8 +101,6 @@ const about = () => {
           </div>
         </section>
 
-        
-
         <section
           className="book-advent-sec"
           style={{ backgroundImage: "url('/images/about-txt-img2.png')" }}
@@ -120,9 +118,9 @@ const about = () => {
               </div>
             </div>
           </div>
-        </section> 
-        <SameLessTravel/>
-        <OurMission/>
+        </section>
+        <SameLessTravel />
+        <OurMission />
       </Layout>
     </>
   );
