@@ -6,6 +6,10 @@ import BannerForm from "../Components/BannerForm/BannerForm";
 import Layout from "../layout/index";
 import AmusementBanner from "../Components/AmusementBanner/index";
 import ModernVision from "../../public/images/modern-vision.svg";
+import Deal1 from "../../public/images/deal-1.svg";
+import Deal2 from "../../public/images/deal-2.svg";
+import Deal3 from "../../public/images/deal-3.svg";
+
 import Image from "next/image";
 
 const searchResults = [
@@ -40,19 +44,19 @@ const searchResults = [
 
 const deals = [
   {
-    image: "/path/to/deal1.jpg",
+    image: Deal1,
     title: "Dubai Top 20 Must-see Attractions with Burj Khalifa and Souks",
     discount: "20% OFF",
     price: "From US$49.00",
   },
   {
-    image: "/path/to/deal2.jpg",
+    image: Deal2,
     title: "Dubai Top 20 Must-see Attractions with Burj Khalifa and Souks",
     discount: "20% OFF",
     price: "From US$49.00",
   },
   {
-    image: "/path/to/deal3.jpg",
+    image: Deal3,
     title: "Dubai Top 20 Must-see Attractions with Burj Khalifa and Souks",
     discount: "20% OFF",
     price: "From US$49.00",
@@ -232,7 +236,7 @@ const DubaiAttractions = () => {
             {searchResults.map((result, index) => (
               <Card key={index} className="mb-4">
                 <Row noGutters>
-                  <Col md={4}>
+                  <Col md={3}>
                     <Image
                       src={result.image}
                       alt={result.title}
@@ -264,16 +268,23 @@ const DubaiAttractions = () => {
               {deals.map((deal, index) => (
                 <Col md={4} key={index}>
                   <Card className="mb-4">
-                    <Card.Img src={deal.image} />
-                    <Card.ImgOverlay>
+                    <Image
+                      src={deal.image}
+                      alt={deal.title}
+                      className="object-fit-cover"
+                      width={300}
+                    />
+                    <Card.ImgOverlay className="d-flex bg-black bg-opacity-25">
                       <div className="discount-badge">{deal.discount}</div>
+                      <Card.Body className="align-self-end">
+                        <Card.Title className="text-white fs-5">
+                          {deal.title}
+                        </Card.Title>
+                        <Card.Text className="text-white fs-6">
+                          {deal.price}
+                        </Card.Text>
+                      </Card.Body>
                     </Card.ImgOverlay>
-                    <Card.Body>
-                      <Card.Title>{deal.title}</Card.Title>
-                      <Card.Text className="font-weight-bold">
-                        {deal.price}
-                      </Card.Text>
-                    </Card.Body>
                   </Card>
                 </Col>
               ))}
@@ -283,7 +294,7 @@ const DubaiAttractions = () => {
             {searchResults.map((result, index) => (
               <Card key={index} className="mb-4">
                 <Row noGutters>
-                  <Col md={4}>
+                  <Col md={3}>
                     <Image
                       src={result.image}
                       alt={result.title}
