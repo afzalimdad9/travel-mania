@@ -63,7 +63,7 @@ const RecommendationsSection = () => {
       <h5 className="text-black font-weight-bold mb-5">
         We&apos;ve got you covered
       </h5>
-      <Row className="mb-4 text-center">
+      <Row className="mb-5 text-center">
         <Col md={4}>
           <FaMapSigns className="icon mb-2" />
           <h6 className="font-weight-bold">Explore top attractions</h6>
@@ -88,12 +88,13 @@ const RecommendationsSection = () => {
           </p>
         </Col>
       </Row>
-      <Row className="mb-4 mt-5">
+
+      <Row className="mb-4">
         <Col>
           <h6 className="section-title">Recommended in Dubai</h6>
           <p>Build your best memories with your loved ones in Dubai</p>
         </Col>
-        <Col className="text-right">
+        <Col>
           <Button variant="outline-primary">See more places</Button>
         </Col>
       </Row>

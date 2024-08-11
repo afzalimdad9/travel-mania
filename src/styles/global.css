@@ -233,6 +233,14 @@ body {
   max-height: 40px;
 }
 
+.covered-row {
+  margin-bottom: 3rem; /* Increase this value for more space */
+}
+
+.recommendation-row {
+  margin-top: 3rem; /* Increase this value for more space */
+}
+
 #main_cstm-class {
   /* Header css */
   /* Header css  end*/

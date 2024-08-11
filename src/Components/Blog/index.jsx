@@ -1,22 +1,25 @@
 import { Card, Col, Container, Row } from "react-bootstrap";
+import EcoFriendly from "../../../public/images/eco-friendly.svg";
+import UnveilingOff from "../../../public/images/unveiling-off.svg";
+import Image from "next/image";
 
 const blogPosts = [
   {
-    image: "/path/to/image1.jpg",
+    image: EcoFriendly,
     title: "Eco-Friendly Travel Destinations",
     description:
       "How to use centuries of unfair advantage to make the world a more equal place",
     date: "2nd January, 2022",
   },
   {
-    image: "/path/to/image2.jpg",
+    image: UnveilingOff,
     title: "Unveiling Off-the-Beaten-Path Destinations",
     description:
       "How to use centuries of unfair advantage to make the world a more equal place",
     date: "2nd January, 2022",
   },
   {
-    image: "/path/to/image3.jpg",
+    image: UnveilingOff,
     title: "Unveiling Off-the-Beaten-Path Destinations",
     description:
       "How to use centuries of unfair advantage to make the world a more equal place",
@@ -27,12 +30,18 @@ const blogPosts = [
 const LatestTravelBlog = () => {
   return (
     <Container className="mt-5">
-      <h6 className="section-title mb-4">Our Latest Travel Blog</h6>
+      <p className="section-title mb-4 fs-4 fw-semibold">
+        Our Latest Travel Blog
+      </p>
       <Row>
         {blogPosts.map((post, index) => (
           <Col md={4} key={index}>
-            <Card className="mb-4">
-              <Card.Img variant="top" src={post.image} />
+            <Card className="mb-5">
+              <Image
+                src={post.image}
+                alt={post.title}
+                className="w-100 object-fit-cover"
+              />
               <Card.Body>
                 <Card.Title>{post.title}</Card.Title>
                 <Card.Text>{post.description}</Card.Text>
