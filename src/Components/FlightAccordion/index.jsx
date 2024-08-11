@@ -4,7 +4,7 @@ import { Accordion, Card, Form } from "react-bootstrap";
 const FilterAccordion = () => {
   return (
     <div className="container">
-      <Accordion>
+      <Accordion defaultActiveKey="2">
         <Accordion.Item eventKey="0">
           <Accordion.Header>Stops</Accordion.Header>
           <Accordion.Body>{/* Content for Stops */}</Accordion.Body>
