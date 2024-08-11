@@ -29,8 +29,8 @@ const amusement = () => {
         <DestinationCard />
         <Signin />
         <ExploreByInterests />
-        <CounterCard />
-        <FlightCard />
+        {/* <CounterCard /> */}
+        {/* <FlightCard /> */}
         <LocationCard />
         <RecommendationsSection />
         <LatestTravelBlog />
