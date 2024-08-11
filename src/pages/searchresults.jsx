@@ -11,6 +11,8 @@ import Deal2 from "../../public/images/deal-2.svg";
 import Deal3 from "../../public/images/deal-3.svg";
 
 import Image from "next/image";
+import { FaCreditCard, FaLeaf } from "react-icons/fa";
+import { FaRegCreditCard } from "react-icons/fa6";
 
 const searchResults = [
   {
@@ -186,14 +188,14 @@ const DubaiAttractions = () => {
             </Col>
             <Col md={9}>
               <h5>Dubai Attractions</h5>
-              <div className="mb-3">
-                <Button variant="outline-primary" className="mr-2">
+              <div className="my-3">
+                <Button variant="outline-primary" className="me-2">
                   Our top picks
                 </Button>
-                <Button variant="outline-primary" className="mr-2">
+                <Button variant="outline-primary" className="me-2">
                   Most popular
                 </Button>
-                <Button variant="outline-primary" className="mr-2">
+                <Button variant="outline-primary" className="me-2">
                   Lowest price
                 </Button>
                 <Button variant="outline-primary">Best reviewed</Button>
@@ -207,18 +209,18 @@ const DubaiAttractions = () => {
                         alt={result.title}
                         className="object-fit-cover"
                       />
-                      {/* <Card.Img src={result.image} /> */}
                     </Col>
                     <Col md={8}>
                       <Card.Body>
-                        <Card.Title>{result.title}</Card.Title>
+                        <Card.Title className="fs-4 text-primary">
+                          {result.title}
+                        </Card.Title>
                         <Card.Text>{result.description}</Card.Text>
-                        <Card.Text className="text-muted">
+                        <Card.Text className="text-success fs-6 d-flex flex-row align-align-items-center">
+                          <FaRegCreditCard className="me-1" />
                           {result.cancellation}
                         </Card.Text>
-                        <Card.Text className="font-weight-bold">
-                          {result.price}
-                        </Card.Text>
+                        <Card.Text className="fs-6">{result.price}</Card.Text>
                         <Button variant="outline-primary">
                           See availability
                         </Button>
@@ -229,7 +231,7 @@ const DubaiAttractions = () => {
               ))}
             </Col>
           </Row>
-          <Col md={9} className="my-4 ps-5">
+          <Col md={9} className="mt-2 mb-4 ps-5">
             <Signin />
           </Col>
           <Col md={9} className="ps-5">
@@ -245,14 +247,15 @@ const DubaiAttractions = () => {
                   </Col>
                   <Col md={8}>
                     <Card.Body>
-                      <Card.Title>{result.title}</Card.Title>
+                      <Card.Title className="fs-4 text-primary">
+                        {result.title}
+                      </Card.Title>
                       <Card.Text>{result.description}</Card.Text>
-                      <Card.Text className="text-muted">
+                      <Card.Text className="text-success fs-6 d-flex flex-row align-align-items-center">
+                        <FaRegCreditCard className="me-1" />
                         {result.cancellation}
                       </Card.Text>
-                      <Card.Text className="font-weight-bold">
-                        {result.price}
-                      </Card.Text>
+                      <Card.Text className="fs-6">{result.price}</Card.Text>
                       <Button variant="outline-primary">
                         See availability
                       </Button>
@@ -303,14 +306,15 @@ const DubaiAttractions = () => {
                   </Col>
                   <Col md={8}>
                     <Card.Body>
-                      <Card.Title>{result.title}</Card.Title>
+                      <Card.Title className="fs-4 text-primary">
+                        {result.title}
+                      </Card.Title>
                       <Card.Text>{result.description}</Card.Text>
-                      <Card.Text className="text-muted">
+                      <Card.Text className="text-success fs-6 d-flex flex-row align-align-items-center">
+                        <FaRegCreditCard className="me-1" />
                         {result.cancellation}
                       </Card.Text>
-                      <Card.Text className="font-weight-bold">
-                        {result.price}
-                      </Card.Text>
+                      <Card.Text className="fs-6">{result.price}</Card.Text>
                       <Button variant="outline-primary">
                         See availability
                       </Button>
