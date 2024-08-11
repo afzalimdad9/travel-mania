@@ -1,8 +1,10 @@
+import axios from "axios";
 import { useState } from "react";
 import { Button, Col, Dropdown, Form, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { LiaExchangeAltSolid } from "react-icons/lia";
+import { authenticate } from "../../pages/api/flight";
 
 const FlightBookingForm = () => {
   const [formData, setFormData] = useState({
@@ -93,11 +95,71 @@ const FlightBookingForm = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("formData", formData);
-      alert("Form submitted successfully!");
+      const authResponse = await authenticate();
+
+      if (!authResponse) {
+        console.error("Authentication failed. Cannot proceed with the search.");
+        return;
+      }
+
+      const { tokenId, trackingId } = authResponse;
+
+      console.log("Authentication successful. Token ID:", tokenId);
+
+      const searchPayload = {
+        EndUserIp: "192.168.11.120",
+        TokenId: tokenId,
+        BookingMode: "5",
+        AdultCount: formData.passengers.adults,
+        ChildCount: formData.passengers.children,
+        InfantCount: 0,
+        DirectFlight: false,
+        OneStopFlight: false,
+        JourneyType: formData.tripType === "round-trip" ? 2 : 1,
+        PreferredAirlines: null,
+        Segments: [
+          {
+            Origin: formData.from,
+            Destination: formData.to,
+            FlightCabinClass:
+              formData.flightMode === "Economy"
+                ? 2
+                : formData.flightMode === "Business"
+                ? 3
+                : 4,
+            PreferredDepartureTime: formData.departureDate,
+          },
+          formData.tripType === "round-trip" && {
+            Origin: formData.to,
+            Destination: formData.from,
+            FlightCabinClass:
+              formData.flightMode === "Economy"
+                ? 2
+                : formData.flightMode === "Business"
+                ? 3
+                : 4,
+            PreferredDepartureTime: formData.returnDate,
+          },
+        ].filter(Boolean),
+        Sources: null,
+        PreferredCurrency: "USD",
+      };
+
+      try {
+        const response = await axios.post("/api/search", {
+          tokenId,
+          searchPayload,
+        });
+        const flightResults = response.data;
+        window.location.href = `/flightresults?data=${encodeURIComponent(
+          JSON.stringify(flightResults)
+        )}`;
+      } catch (error) {
+        console.error("Error during flight search:", error);
+      }
     }
   };
 
@@ -134,6 +196,8 @@ const FlightBookingForm = () => {
                   <option value="Karachi">Karachi</option>
                   <option value="Lahore">Lahore</option>
                   <option value="Islamabad">Islamabad</option>
+                  <option value="DEL">Delhi</option>
+                  <option value="DXB">Dubai</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -156,6 +220,8 @@ const FlightBookingForm = () => {
                   <option value="Karachi">Karachi</option>
                   <option value="Lahore">Lahore</option>
                   <option value="Islamabad">Islamabad</option>
+                  <option value="DEL">Delhi</option>
+                  <option value="DXB">Dubai</option>
                 </Form.Select>
               </Form.Group>
             </Col>
