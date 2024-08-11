@@ -1,31 +1,35 @@
 import Image from "next/image";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaClock, FaHeadset, FaMapSigns } from "react-icons/fa";
+import DesertSafari from "../../../public/images/desert-safari.svg";
+import AdmissionTickets from "../../../public/images/admission-tickets.svg";
+import SightseeingTour from "../../../public/images/sightseeing-tour.svg";
+import BoatRide from "../../../public/images/boat-ride.svg";
 
 const recommendations = [
   {
-    image: "/path/to/image1.jpg",
+    image: DesertSafari,
     title: "Dubai Desert Safari with BBQ Dinner",
     days: "3 Days",
     price: "Rs. 23,000",
     location: "Dubai",
   },
   {
-    image: "/path/to/image2.jpg",
+    image: AdmissionTickets,
     title: "Burj Khalifa Admission Tickets",
     days: "1 Day",
     price: "Rs. 23,000",
     location: "Dubai",
   },
   {
-    image: "/path/to/image3.jpg",
+    image: SightseeingTour,
     title: "Abu Dhabi Sightseeing Tour",
     days: "1 Day",
     price: "Rs. 23,000",
     location: "Dubai",
   },
   {
-    image: "/path/to/image4.jpg",
+    image: BoatRide,
     title: "Burj Khalifa Lake Boat Ride",
     days: "14 Days",
     price: "Rs. 23,000",
@@ -36,12 +40,18 @@ const recommendations = [
 const RecommendationCard = ({ image, title, days, price, location }) => (
   <Col md={6} lg={3} className="mb-4">
     <div className="card recommendation-card">
-      <Image src={image} className="card-img-top" alt={title} fill />
+      <Image
+        src={image}
+        className="card-img-top"
+        alt={title}
+        width={200}
+        heigh={200}
+      />
       <div className="card-body">
         <p className="location mb-1">{location}</p>
-        <h5 className="card-title">{title}</h5>
+        <p className="fw-bolder">{title}</p>
         <p className="days mb-1">{days}</p>
-        <p className="price mb-0">From: {price}</p>
+        <p className="price mb-0 text-primary">From: {price}</p>
       </div>
     </div>
   </Col>
@@ -50,6 +60,9 @@ const RecommendationCard = ({ image, title, days, price, location }) => (
 const RecommendationsSection = () => {
   return (
     <Container className="mt-5">
+      <h5 className="text-black font-weight-bold mb-5">
+        We&apos;ve got you covered
+      </h5>
       <Row className="mb-4 text-center">
         <Col md={4}>
           <FaMapSigns className="icon mb-2" />
@@ -75,7 +88,7 @@ const RecommendationsSection = () => {
           </p>
         </Col>
       </Row>
-      <Row className="mb-4">
+      <Row className="mb-4 mt-5">
         <Col>
           <h6 className="section-title">Recommended in Dubai</h6>
           <p>Build your best memories with your loved ones in Dubai</p>
