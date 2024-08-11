@@ -5,10 +5,12 @@ import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import BannerForm from "../Components/BannerForm/BannerForm";
 import Layout from "../layout/index";
 import AmusementBanner from "../Components/AmusementBanner/index";
+import ModernVision from "../../public/images/modern-vision.svg";
+import Image from "next/image";
 
 const searchResults = [
   {
-    image: "/path/to/image1.jpg",
+    image: ModernVision,
     title:
       "Modern Visions of Dubai - Dubai Marina Cruise and Dubai Frame Visit",
     description:
@@ -17,7 +19,7 @@ const searchResults = [
     cancellation: "Free cancellation available",
   },
   {
-    image: "/path/to/image1.jpg",
+    image: ModernVision,
     title:
       "Modern Visions of Dubai - Dubai Marina Cruise and Dubai Frame Visit",
     description:
@@ -26,7 +28,7 @@ const searchResults = [
     cancellation: "Free cancellation available",
   },
   {
-    image: "/path/to/image1.jpg",
+    image: ModernVision,
     title:
       "Modern Visions of Dubai - Dubai Marina Cruise and Dubai Frame Visit",
     description:
@@ -95,7 +97,7 @@ const DubaiAttractions = () => {
       <Layout>
         <AmusementBanner />
         <BannerForm />
-        <Container className="mt-5">
+        <Container className="mt-5 d-flex flex-column align-items-end">
           <Row>
             <Col md={3}>
               <h5>Filter by</h5>
@@ -195,8 +197,13 @@ const DubaiAttractions = () => {
               {searchResults.map((result, index) => (
                 <Card key={index} className="mb-4">
                   <Row noGutters>
-                    <Col md={4}>
-                      <Card.Img src={result.image} />
+                    <Col md={3}>
+                      <Image
+                        src={result.image}
+                        alt={result.title}
+                        className="object-fit-cover"
+                      />
+                      {/* <Card.Img src={result.image} /> */}
                     </Col>
                     <Col md={8}>
                       <Card.Body>
@@ -218,13 +225,19 @@ const DubaiAttractions = () => {
               ))}
             </Col>
           </Row>
-          <Signin />
-          <Col md={9}>
+          <Col md={9} className="my-4 ps-5">
+            <Signin />
+          </Col>
+          <Col md={9} className="ps-5">
             {searchResults.map((result, index) => (
               <Card key={index} className="mb-4">
                 <Row noGutters>
                   <Col md={4}>
-                    <Card.Img src={result.image} />
+                    <Image
+                      src={result.image}
+                      alt={result.title}
+                      className="object-fit-cover"
+                    />
                   </Col>
                   <Col md={8}>
                     <Card.Body>
@@ -245,31 +258,37 @@ const DubaiAttractions = () => {
               </Card>
             ))}
           </Col>
-          <h4 className="mb-4">Deals and Discounts</h4>
-          <Row>
-            {deals.map((deal, index) => (
-              <Col md={4} key={index}>
-                <Card className="mb-4">
-                  <Card.Img src={deal.image} />
-                  <Card.ImgOverlay>
-                    <div className="discount-badge">{deal.discount}</div>
-                  </Card.ImgOverlay>
-                  <Card.Body>
-                    <Card.Title>{deal.title}</Card.Title>
-                    <Card.Text className="font-weight-bold">
-                      {deal.price}
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-          <Col md={9}>
+          <Col md={9} className="ps-5">
+            <Row>
+              <h5 className="mb-4 text-black">Deals and Discounts</h5>
+              {deals.map((deal, index) => (
+                <Col md={4} key={index}>
+                  <Card className="mb-4">
+                    <Card.Img src={deal.image} />
+                    <Card.ImgOverlay>
+                      <div className="discount-badge">{deal.discount}</div>
+                    </Card.ImgOverlay>
+                    <Card.Body>
+                      <Card.Title>{deal.title}</Card.Title>
+                      <Card.Text className="font-weight-bold">
+                        {deal.price}
+                      </Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+          </Col>
+          <Col md={9} className="ps-5">
             {searchResults.map((result, index) => (
               <Card key={index} className="mb-4">
                 <Row noGutters>
                   <Col md={4}>
-                    <Card.Img src={result.image} />
+                    <Image
+                      src={result.image}
+                      alt={result.title}
+                      className="object-fit-cover"
+                    />
                   </Col>
                   <Col md={8}>
                     <Card.Body>
