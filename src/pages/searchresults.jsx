@@ -220,10 +220,14 @@ const DubaiAttractions = () => {
                           <FaRegCreditCard className="me-1" />
                           {result.cancellation}
                         </Card.Text>
-                        <Card.Text className="fs-6">{result.price}</Card.Text>
-                        <Button variant="outline-primary">
-                          See availability
-                        </Button>
+                        <div className="d-flex flex-row justify-content-between my-3">
+                          <Card.Text className="fs-5 fw-bold">
+                            {result.price}
+                          </Card.Text>
+                          <Button variant="outline-primary">
+                            See availability
+                          </Button>
+                        </div>
                       </Card.Body>
                     </Col>
                   </Row>
@@ -255,10 +259,14 @@ const DubaiAttractions = () => {
                         <FaRegCreditCard className="me-1" />
                         {result.cancellation}
                       </Card.Text>
-                      <Card.Text className="fs-6">{result.price}</Card.Text>
-                      <Button variant="outline-primary">
-                        See availability
-                      </Button>
+                      <div className="d-flex flex-row justify-content-between my-3">
+                        <Card.Text className="fs-5 fw-bold">
+                          {result.price}
+                        </Card.Text>
+                        <Button variant="outline-primary">
+                          See availability
+                        </Button>
+                      </div>
                     </Card.Body>
                   </Col>
                 </Row>
@@ -314,10 +322,14 @@ const DubaiAttractions = () => {
                         <FaRegCreditCard className="me-1" />
                         {result.cancellation}
                       </Card.Text>
-                      <Card.Text className="fs-6">{result.price}</Card.Text>
-                      <Button variant="outline-primary">
-                        See availability
-                      </Button>
+                      <div className="d-flex flex-row justify-content-between my-3">
+                        <Card.Text className="fs-5 fw-bold">
+                          {result.price}
+                        </Card.Text>
+                        <Button variant="outline-primary">
+                          See availability
+                        </Button>
+                      </div>
                     </Card.Body>
                   </Col>
                 </Row>
