@@ -25,13 +25,76 @@ const blogPosts = [
       "How to use centuries of unfair advantage to make the world a more equal place",
     date: "2nd January, 2022",
   },
+  {
+    image: EcoFriendly,
+    title: "Eco-Friendly Travel Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
+  {
+    image: UnveilingOff,
+    title: "Unveiling Off-the-Beaten-Path Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
+  {
+    image: UnveilingOff,
+    title: "Unveiling Off-the-Beaten-Path Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
+  {
+    image: EcoFriendly,
+    title: "Eco-Friendly Travel Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
+  {
+    image: UnveilingOff,
+    title: "Unveiling Off-the-Beaten-Path Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
+  {
+    image: UnveilingOff,
+    title: "Unveiling Off-the-Beaten-Path Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
+  {
+    image: EcoFriendly,
+    title: "Eco-Friendly Travel Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
+  {
+    image: UnveilingOff,
+    title: "Unveiling Off-the-Beaten-Path Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
+  {
+    image: UnveilingOff,
+    title: "Unveiling Off-the-Beaten-Path Destinations",
+    description:
+      "How to use centuries of unfair advantage to make the world a more equal place",
+    date: "2nd January, 2022",
+  },
 ];
 
 const BlogList = () => {
   return (
     <Container className="mt-5">
       {/* Dropdown and Search Bar */}
-      <Row className="mb-4">
+      <Row className="mb-5">
         <Col md={3}>
           <Form.Select>
             <option>Latest Blog</option>
@@ -78,7 +141,7 @@ const BlogList = () => {
       <Row className="my-5">
         <Col className="d-flex justify-content-center">
           <Button variant="primary" className="px-5">
-            Load More
+            Read More
           </Button>
         </Col>
       </Row>
