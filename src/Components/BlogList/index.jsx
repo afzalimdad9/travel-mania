@@ -73,6 +73,15 @@ const BlogList = () => {
           </Col>
         ))}
       </Row>
+
+      {/* Centered Load More Button */}
+      <Row className="my-5">
+        <Col className="d-flex justify-content-center">
+          <Button variant="primary" className="px-5">
+            Load More
+          </Button>
+        </Col>
+      </Row>
     </Container>
   );
 };
