@@ -2,6 +2,7 @@ import axios from "axios";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
+    console.log("inside authenticate api");
     try {
       const response = await axios.post(
         "https://tboairdemo.techmaster.in/API/API/v1/Authenticate/ValidateAgency/",

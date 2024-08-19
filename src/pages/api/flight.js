@@ -1,6 +1,19 @@
 import axios from "axios";
 
+const TOKEN_EXPIRY_TIME = 15 * 60 * 1000;
+
 export const authenticate = async () => {
+  const storedToken = localStorage.getItem("tokenId");
+  const tokenExpiryTime = localStorage.getItem("tokenExpiryTime");
+
+  if (
+    storedToken &&
+    tokenExpiryTime &&
+    new Date().getTime() < tokenExpiryTime
+  ) {
+    return { tokenId: storedToken };
+  }
+
   const credentials = {
     BookingMode: "API",
     UserName: "albukhari",
@@ -10,10 +23,14 @@ export const authenticate = async () => {
 
   try {
     const response = await axios.post("/api/authenticate", credentials);
-    console.log("response", response);
     const data = response.data;
 
+    console.log("data", data);
+
     if (data && data.TokenId && data.TrackingId) {
+      const currentTime = new Date().getTime();
+      localStorage.setItem("tokenId", data.TokenId);
+      localStorage.setItem("tokenExpiryTime", currentTime + TOKEN_EXPIRY_TIME);
       return { tokenId: data.TokenId, trackingId: data.TrackingId };
     } else {
       throw new Error("Authentication failed");
@@ -24,7 +41,15 @@ export const authenticate = async () => {
   }
 };
 
-export const searchFlights = async (tokenId, searchPayload) => {
+export const searchFlights = async (searchPayload) => {
+  const authResponse = await authenticate();
+  if (!authResponse) {
+    console.error("Failed to authenticate.");
+    return null;
+  }
+
+  const { tokenId } = authResponse;
+
   try {
     const response = await axios.post(
       "https://apistaging.tboair.com/InternalAirService.svc/rest/Search/",

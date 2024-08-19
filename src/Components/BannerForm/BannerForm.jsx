@@ -1,9 +1,11 @@
 import axios from "axios";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Col, Dropdown, Form, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { LiaExchangeAltSolid } from "react-icons/lia";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { authenticate } from "../../pages/api/flight";
 
 const FlightBookingForm = () => {
@@ -73,23 +75,23 @@ const FlightBookingForm = () => {
     );
 
     if (!from) {
-      alert("Please select a departure city.");
+      toast.error("Please select a departure city.");
       return false;
     }
     if (!to) {
-      alert("Please select a destination city.");
+      toast.error("Please select a destination city.");
       return false;
     }
     if (!departureDate) {
-      alert("Please select a departure date.");
+      toast.error("Please select a departure date.");
       return false;
     }
     if (tripType === "round-trip" && !returnDate) {
-      alert("Please select a return date.");
+      toast.error("Please select a return date.");
       return false;
     }
     if (totalPassengers === 0) {
-      alert("Please select at least one passenger.");
+      toast.error("Please select at least one passenger.");
       return false;
     }
     return true;
@@ -101,13 +103,11 @@ const FlightBookingForm = () => {
       const authResponse = await authenticate();
 
       if (!authResponse) {
-        console.error("Authentication failed. Cannot proceed with the search.");
+        toast.error("Authentication failed. Cannot proceed with the search.");
         return;
       }
 
       const { tokenId, trackingId } = authResponse;
-
-      console.log("Authentication successful. Token ID:", tokenId);
 
       const searchPayload = {
         EndUserIp: "192.168.11.120",
@@ -154,10 +154,25 @@ const FlightBookingForm = () => {
           searchPayload,
         });
         const flightResults = response.data;
-        window.location.href = `/flightresults?data=${encodeURIComponent(
-          JSON.stringify(flightResults)
-        )}`;
+        console.log("flightResults", flightResults.Response);
+        if (flightResults && flightResults.Response.ResponseStatus === 1) {
+          console.log("flightResults", flightResults.Response.Results);
+          localStorage.setItem(
+            "flightResults",
+            JSON.stringify(flightResults.Response.Results)
+          );
+          window.location.href = "/flightresults";
+        } else if (flightResults && flightResults.Error) {
+          toast.error(
+            `Error: ${
+              flightResults.Error.ErrorMessage || "An unexpected error occurred"
+            }`
+          );
+        } else {
+          toast.error("An unexpected error occurred during flight search.");
+        }
       } catch (error) {
+        toast.error("Error during flight search. Please try again.");
         console.error("Error during flight search:", error);
       }
     }
@@ -168,6 +183,7 @@ const FlightBookingForm = () => {
   return (
     <section className="booking_form-sec">
       <div className="container">
+        <ToastContainer />
         <Form onSubmit={handleSubmit} className="booking_form-mn">
           <Row className="mb-3 trip_select-mn">
             <Col md={2}>
@@ -368,7 +384,6 @@ const FlightBookingForm = () => {
             </Col>
           </Row>
 
-          {/* Buttons Section */}
           <Row className="mb-3 justify-content-end">
             <Col md="auto">
               <Button variant="outline-primary" className="btn-promo-code">
