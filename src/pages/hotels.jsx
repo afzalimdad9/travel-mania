@@ -10,7 +10,7 @@ import HotelBook from "../Components/HotelBook";
 import PlaneTrip from "../Components/PlaneTrip/PlaneTrip";
 import Layout from "../layout/index";
 
-export default hotel = () => {
+const hotels = () => {
   return (
     <>
       <Head>
@@ -32,3 +32,5 @@ export default hotel = () => {
     </>
   );
 };
+
+export default hotels;

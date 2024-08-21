@@ -4,8 +4,6 @@ import Layout from "../layout/index";
 import BannerForm from "../Components/BannerForm/BannerForm";
 import HomeBanner from "../Components/HomeBanner";
 import FlightStats from "../Components/FlightStats";
-import FlightInfo from "../Components/FlightInfo";
-import FlightAccordion from "../Components/FlightAccordion";
 import AllFlights from "../Components/AllFlights";
 
 const flights = () => {

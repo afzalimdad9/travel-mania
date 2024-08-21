@@ -1,12 +1,12 @@
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import React, { useState } from "react";
 import { Button, Col, Dropdown, Form, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { LiaExchangeAltSolid } from "react-icons/lia";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { authenticate } from "../../pages/api/flight";
+import { ToastContainer, toast } from "react-toastify";
 
 const FlightBookingForm = () => {
   const [formData, setFormData] = useState({
