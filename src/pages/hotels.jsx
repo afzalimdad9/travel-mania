@@ -5,6 +5,7 @@ import HotelBook from "../Components/HotelBook";
 import Layout from "../layout/index";
 import LatestTravelBlog from "../Components/Blog";
 import DiscoverGreece from "../Components/DiscoverGreece";
+import ExploreStays from "../Components/ExploreStays";
 
 const hotels = () => {
   return (
@@ -18,6 +19,7 @@ const hotels = () => {
       <Layout>
         <HotelBanner />
         <BannerForm />
+        <ExploreStays />
         <HotelBook />
         <DiscoverGreece />
         <LatestTravelBlog />
