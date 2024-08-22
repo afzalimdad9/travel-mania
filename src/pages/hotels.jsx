@@ -6,6 +6,7 @@ import Layout from "../layout/index";
 import LatestTravelBlog from "../Components/Blog";
 import DiscoverGreece from "../Components/DiscoverGreece";
 import ExploreStays from "../Components/ExploreStays";
+import PopularHotelsDubai from "../Components/PopularHotelsDubai";
 
 const hotels = () => {
   return (
@@ -22,6 +23,7 @@ const hotels = () => {
         <ExploreStays />
         <HotelBook />
         <DiscoverGreece />
+        <PopularHotelsDubai />
         <LatestTravelBlog />
       </Layout>
     </>
