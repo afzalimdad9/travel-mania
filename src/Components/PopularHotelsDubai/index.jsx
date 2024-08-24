@@ -12,7 +12,7 @@ const index = () => {
         <div className="row">
           <div className="col-md-12">
             <div className="hotel-head">
-              <h6>Popular Hotels in Dubai</h6>
+              <h6 className="text-start">Popular Hotels in Dubai</h6>
             </div>
           </div>
         </div>
@@ -45,10 +45,10 @@ const index = () => {
                     </li>
                   </ul>
                   <div className="price">
-                    <h5>
-                      $280/ <span>Per Night</span>
-                    </h5>
-                    <Link href={"/"} className="price-link">
+                    <h6>
+                      $150/ <span>Per Night</span>
+                    </h6>
+                    <Link href={"/"}>
                       <BsArrowRight />
                     </Link>
                   </div>
