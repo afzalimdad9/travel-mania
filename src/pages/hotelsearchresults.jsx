@@ -17,30 +17,54 @@ import { FaRegCreditCard } from "react-icons/fa6";
 const searchResults = [
   {
     image: ModernVision,
-    title:
-      "Modern Visions of Dubai - Dubai Marina Cruise and Dubai Frame Visit",
-    description:
-      "With this tour you get the chance to discover Dubai's Past, Present and Future. Experience a Pan...",
-    price: "US$499",
-    cancellation: "Free cancellation available",
+    location: "Business Bay, Dubai",
+    distance: "1.1 miles from downtown",
+    title: "The First Collection Waterfront",
+    description: "Deluxe Room with Soluna Beach Club Access",
+    features: ["Free airport taxi, Limited-time Deal", "Free cancellation"],
+    nights: "15 nights, 2 adults",
+    originalPrice: "$540",
+    discountedPrice: "$499",
+    rating: {
+      score: "8.8",
+      text: "Excellent",
+      reviews: "1025 reviews",
+      comfortScore: "Comfort 9.2",
+    },
   },
   {
     image: ModernVision,
-    title:
-      "Modern Visions of Dubai - Dubai Marina Cruise and Dubai Frame Visit",
-    description:
-      "With this tour you get the chance to discover Dubai's Past, Present and Future. Experience a Pan...",
-    price: "US$499",
-    cancellation: "Free cancellation available",
+    location: "Business Bay, Dubai",
+    distance: "1.1 miles from downtown",
+    title: "The First Collection Waterfront",
+    description: "Deluxe Room with Soluna Beach Club Access",
+    features: ["Free airport taxi, Limited-time Deal", "Free cancellation"],
+    nights: "15 nights, 2 adults",
+    originalPrice: "$540",
+    discountedPrice: "$499",
+    rating: {
+      score: "8.8",
+      text: "Excellent",
+      reviews: "1025 reviews",
+      comfortScore: "Comfort 9.2",
+    },
   },
   {
     image: ModernVision,
-    title:
-      "Modern Visions of Dubai - Dubai Marina Cruise and Dubai Frame Visit",
-    description:
-      "With this tour you get the chance to discover Dubai's Past, Present and Future. Experience a Pan...",
-    price: "US$499",
-    cancellation: "Free cancellation available",
+    location: "Business Bay, Dubai",
+    distance: "1.1 miles from downtown",
+    title: "The First Collection Waterfront",
+    description: "Deluxe Room with Soluna Beach Club Access",
+    features: ["Free airport taxi, Limited-time Deal", "Free cancellation"],
+    nights: "15 nights, 2 adults",
+    originalPrice: "$540",
+    discountedPrice: "$499",
+    rating: {
+      score: "8.8",
+      text: "Excellent",
+      reviews: "1025 reviews",
+      comfortScore: "Comfort 9.2",
+    },
   },
 ];
 
@@ -103,7 +127,7 @@ const HotelSearchResults = () => {
       <Layout>
         <HotelBanner />
         <BannerForm />
-        <Container className="mt-5 d-flex flex-column align-items-end">
+        <Container className="mt-5 d-flex flex-column align-items-stretch">
           <Row>
             <Col md={3}>
               <h5>Filter by</h5>
@@ -201,29 +225,49 @@ const HotelSearchResults = () => {
                 <Button variant="outline-primary">Best reviewed</Button>
               </div>
               {searchResults.map((result, index) => (
-                <Card key={index} className="mb-4">
-                  <Row noGutters>
-                    <Col md={3}>
+                <Card key={index} className="mb-4 border-0 shadow-sm rounded-3">
+                  <Row className="g-0">
+                    <Col md={4}>
                       <Image
                         src={result.image}
                         alt={result.title}
-                        className="object-fit-cover"
+                        layout="responsive"
+                        className="img-fluid rounded-start"
                       />
                     </Col>
                     <Col md={8}>
-                      <Card.Body>
-                        <Card.Title className="fs-4 text-primary">
-                          {result.title}
-                        </Card.Title>
-                        <Card.Text>{result.description}</Card.Text>
-                        <Card.Text className="text-success fs-6 d-flex flex-row align-align-items-center">
-                          <FaRegCreditCard className="me-1" />
-                          {result.cancellation}
-                        </Card.Text>
-                        <div className="d-flex flex-row justify-content-between my-3">
-                          <Card.Text className="fs-5 fw-bold">
-                            {result.price}
+                      <Card.Body className="d-flex flex-column justify-content-between h-100">
+                        <div>
+                          <Card.Text className="text-muted mb-1">
+                            {result.location} • {result.distance}
                           </Card.Text>
+                          <Card.Title className="text-primary h5">
+                            {result.title}
+                          </Card.Title>
+                          <Card.Text className="fw-bold mb-2">
+                            {result.description}
+                          </Card.Text>
+                          <ul className="list-unstyled mb-2">
+                            {result.features.map((feature, idx) => (
+                              <li key={idx} className="text-success small mb-1">
+                                <FaRegCreditCard className="me-1" />
+                                {feature}
+                              </li>
+                            ))}
+                          </ul>
+                          <Card.Text className="text-muted small mb-2">
+                            {result.nights}
+                          </Card.Text>
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center mt-3">
+                          <div>
+                            <Card.Text className="mb-0 text-decoration-line-through text-muted">
+                              {result.originalPrice}
+                            </Card.Text>
+                            <Card.Text className="h4 mb-0 text-primary">
+                              {result.discountedPrice}
+                            </Card.Text>
+                          </div>
                           <Button variant="outline-primary">
                             See availability
                           </Button>
@@ -231,6 +275,22 @@ const HotelSearchResults = () => {
                       </Card.Body>
                     </Col>
                   </Row>
+                  <div className="position-absolute top-0 end-0 mt-3 me-3 text-end">
+                    <div className="d-flex align-items-center">
+                      <span className="text-muted me-2 small">
+                        {result.rating.text}
+                      </span>
+                      <span className="badge bg-warning text-dark fs-6">
+                        {result.rating.score}
+                      </span>
+                    </div>
+                    <div className="small text-muted">
+                      {result.rating.reviews}
+                    </div>
+                    <div className="small text-primary">
+                      {result.rating.comfortScore}
+                    </div>
+                  </div>
                 </Card>
               ))}
             </Col>
