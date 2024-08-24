@@ -17,7 +17,7 @@ const LocationCard = () => {
               <div className="promotion-banner">20% OFF</div>
               <Image
                 src={image}
-                className="card-img-top"
+                className="card-img-top object-fit-cover"
                 alt="Hotel and Apartments"
                 layout="responsive"
               />
