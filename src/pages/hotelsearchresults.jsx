@@ -227,7 +227,7 @@ const HotelSearchResults = () => {
               {searchResults.map((result, index) => (
                 <Card key={index} className="mb-4 border-0 shadow-sm rounded-3">
                   <Row className="g-0">
-                    <Col md={4}>
+                    <Col md={3}>
                       <Image
                         src={result.image}
                         alt={result.title}
@@ -235,8 +235,8 @@ const HotelSearchResults = () => {
                         className="img-fluid rounded-start"
                       />
                     </Col>
-                    <Col md={8}>
-                      <Card.Body className="d-flex flex-column justify-content-between h-100">
+                    <Col md={5}>
+                      <Card.Body className="d-flex flex-column justify-content-between">
                         <div>
                           <Card.Text className="text-muted mb-1">
                             {result.location} • {result.distance}
@@ -259,8 +259,8 @@ const HotelSearchResults = () => {
                             {result.nights}
                           </Card.Text>
                         </div>
-                        <div className="d-flex justify-content-between align-items-center mt-3">
-                          <div>
+                        <div className="d-flex align-items-center mt-3">
+                          <div className="d-flex">
                             <Card.Text className="mb-0 text-decoration-line-through text-muted">
                               {result.originalPrice}
                             </Card.Text>
