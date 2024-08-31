@@ -3,6 +3,7 @@ import "rsuite/dist/rsuite.min.css";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { useRouter } from "next/router";
 import "../styles/global.css";
+import HotelContextProvider from "../context/HotelDataContext";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -18,7 +19,9 @@ export default function App({ Component, pageProps }) {
       redirectUri={typeof window !== "undefined" ? window.location.origin : ""}
       onRedirectCallback={onRedirectCallback}
     >
-      <Component {...pageProps} />
+      <HotelContextProvider>
+        <Component {...pageProps} />
+      </HotelContextProvider>
     </Auth0Provider>
   );
 }

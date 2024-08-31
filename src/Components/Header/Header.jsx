@@ -19,7 +19,7 @@ const headerData = [
   },
   {
     title: "Stays",
-    link: "/",
+    link: "/hotels",
     icon: "LiaBedSolid",
   },
 ];

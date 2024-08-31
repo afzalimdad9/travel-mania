@@ -2691,3 +2691,24 @@ body {
     margin-top: 30px;
   }
 } /*# sourceMappingURL=global.css.map */
+
+.price_tags {
+  font-size: 16px !important;
+}
+.select_trip.guests {
+  width: 45% !important;
+}
+
+.details-page {
+  margin-top: 0px !important;
+}
+
+.details-page .booking_form-mn {
+  box-shadow: none !important;
+}
+
+.room_card {
+  border: 1px solid black;
+  padding: 30px 20px;
+  border-radius: 12px;
+}

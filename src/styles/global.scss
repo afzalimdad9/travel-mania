@@ -472,6 +472,10 @@ body {
     }
   }
 
+  .select_trip.guests {
+    width: 100% !important;
+  }
+
   .select_trip {
     position: relative;
     .dropdown-toggle {
@@ -2654,6 +2658,11 @@ section.counter_sec {
   color: white;
   margin-bottom: 20px;
 }
+
+.price_tags {
+  font-size: 16px !important;
+}
+
 /* Media Query */
 
 @media only screen and (min-width: 300px) and (max-width: 519px) {

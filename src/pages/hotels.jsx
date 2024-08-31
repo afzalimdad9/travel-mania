@@ -1,5 +1,5 @@
 import Head from "next/head";
-import BannerForm from "../Components/BannerForm/BannerForm";
+import HotelBookingForm from "../Components/BannerForm/HotelBookingForm";
 import HotelBanner from "../Components/HotelBanner";
 import HotelBook from "../Components/HotelBook";
 import Layout from "../layout/index";
@@ -20,7 +20,7 @@ const hotels = () => {
       </Head>
       <Layout>
         <HotelBanner />
-        <BannerForm />
+        <HotelBookingForm />
         <ExploreStays />
         <HotelBook />
         <DealsAndDiscounts />

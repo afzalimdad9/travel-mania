@@ -21,7 +21,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/Components/HotelCard/index.jsx"  ],
   "exclude": [
     "node_modules"
   ]
