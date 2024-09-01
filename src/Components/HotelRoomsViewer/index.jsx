@@ -4,6 +4,7 @@ import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { calculateNights } from "../../utils";
 import { useHotelContext } from "../../context/HotelDataContext";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 const HotelRoomsViewer = ({ rooms }) => {
   const {
@@ -84,6 +85,7 @@ function BookingOptions({ room, selectedRoom }) {
   const {
     query: { checkin, checkout },
   } = useRouter();
+  const { hotelData } = useHotelContext();
   return (
     <div className="container mt-3">
       <div className="row">
@@ -133,15 +135,18 @@ function BookingOptions({ room, selectedRoom }) {
                 <div className=" mb-3"> -40% TODAY </div>
                 <div className="h3 mb-3 text-decoration-line-through">
                   {" "}
-                  ${(room?.TotalFare + room?.TotalTax).toFixed(0)}{" "}
+                  {getSymbolFromCurrency(hotelData?.Currency)}
+                  {(room?.TotalFare + room?.TotalTax).toFixed(0)}{" "}
                   <span className="text-success">
                     {" "}
-                    ${(room?.TotalFare).toFixed(0)}{" "}
+                    {getSymbolFromCurrency(hotelData?.Currency)}
+                    {(room?.TotalFare).toFixed(0)}{" "}
                   </span>{" "}
                 </div>
                 <p className="mb-3">
                   {" "}
-                  ${room?.DayRates?.[0]?.[0]?.BasePrice?.toFixed(0)} per night (
+                  {getSymbolFromCurrency(hotelData?.Currency)}
+                  {room?.DayRates?.[0]?.[0]?.BasePrice?.toFixed(0)} per night (
                   {calculateNights(checkin, checkout)} nights){" "}
                 </p>
                 <p className="mb-3"> VAT included </p>
