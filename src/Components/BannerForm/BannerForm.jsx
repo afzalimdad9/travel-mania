@@ -1,11 +1,13 @@
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Col, Dropdown, Form, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { LiaExchangeAltSolid } from "react-icons/lia";
 import { authenticate } from "../../pages/api/flight";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { useFlightContext } from "../../context/FlightDataContext";
 
 const FlightBookingForm = () => {
   const [formData, setFormData] = useState({
@@ -22,6 +24,39 @@ const FlightBookingForm = () => {
       children: 0,
     },
   });
+  const router = useRouter();
+  const { setFlights } = useFlightContext();
+
+  useEffect(() => {
+    if (router.query.tripType) {
+      const {
+        tripType,
+        flightMode,
+        departureDate,
+        returnDate,
+        departureTime,
+        returnTime,
+        from,
+        to,
+        adults,
+        children,
+      } = router.query;
+      setFormData({
+        tripType,
+        flightMode,
+        departureDate,
+        returnDate,
+        departureTime,
+        returnTime,
+        from,
+        to,
+        passengers: {
+          adults: Number(adults),
+          children: Number(children),
+        },
+      });
+    }
+  }, [router.query]);
 
   const [passengerDropdown, setPassengerDropdown] = useState(false);
 
@@ -106,7 +141,7 @@ const FlightBookingForm = () => {
         return;
       }
 
-      const { tokenId, trackingId } = authResponse;
+      const { tokenId } = authResponse;
 
       const searchPayload = {
         EndUserIp: "192.168.11.120",
@@ -115,6 +150,9 @@ const FlightBookingForm = () => {
         ChildCount: formData.passengers.children,
         InfantCount: 0,
         JourneyType: formData.tripType === "round-trip" ? 2 : 1,
+        DirectFlight: "false",
+        OneStopFlight: "false",
+        PreferredAirlines: null,
         BookingMode: "5",
         Segments: [
           {
@@ -140,6 +178,7 @@ const FlightBookingForm = () => {
             PreferredDepartureTime: formData.returnDate,
           },
         ].filter(Boolean),
+        Sources: null,
       };
 
       try {
@@ -148,13 +187,26 @@ const FlightBookingForm = () => {
           searchPayload,
         });
         const flightResults = response.data;
-        console.log(flightResults);
         if (flightResults && flightResults.Response.ResponseStatus === 1) {
           localStorage.setItem(
             "flightResults",
-            JSON.stringify(flightResults.Response.Results)
+            JSON.stringify(flightResults.Response.Results[0])
           );
-          window.location.href = "/flightresults";
+          setFlights(flightResults.Response.Results[0]);
+          localStorage.setItem("TraceId", flightResults.Response.TraceId);
+          router.push({
+            pathname: "/flights",
+            query: {
+              adults: formData.passengers.adults,
+              children: formData.passengers.children,
+              tripType: formData.tripType,
+              from: formData.from,
+              to: formData.to,
+              flightMode: formData.flightMode,
+              departureDate: formData.departureDate,
+              returnDate: formData.returnDate,
+            },
+          });
         } else if (flightResults && flightResults.Error) {
           toast.error(
             `Error: ${

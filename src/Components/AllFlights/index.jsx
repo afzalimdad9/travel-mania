@@ -1,9 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import FlightAccordion from "../FlightAccordion";
 import FlightInfo from "../FlightInfo";
 import { Container, Row, Col, Dropdown } from "react-bootstrap";
+import { useFlightContext } from "../../context/FlightDataContext";
 
-const index = () => {
+const AllFlights = () => {
+  const { flights } = useFlightContext();
+  const [sort, setSort] = useState(0);
+
+  let sortedFlights = flights.sort(function (a, b) {
+    switch (sort) {
+      case 0:
+        return b.Fare.BaseFare - a.Fare.BaseFare;
+
+      case 1:
+        return a.Fare.BaseFare - b.Fare.BaseFare;
+
+      default:
+        return a.Segments[0][0].Duration - b.Segments[0][0].Duration;
+    }
+  });
+
   return (
     <Container fluid className="container">
       <Row className="my-4">
@@ -22,7 +39,7 @@ const index = () => {
               xs={6}
               className="d-flex justify-content-end align-items-center"
             >
-              <span className="me-2">236 Results</span>
+              <span className="me-2">{flights.length} Results</span>
               <Dropdown>
                 <Dropdown.Toggle
                   variant="outline-secondary"
@@ -32,9 +49,33 @@ const index = () => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">Best</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Cheapest</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">Fastest</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSort(0);
+                    }}
+                    href=""
+                  >
+                    Best
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSort(1);
+                    }}
+                    href=""
+                  >
+                    Cheapest
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSort(2);
+                    }}
+                    href=""
+                  >
+                    Fastest
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </Col>
@@ -43,9 +84,9 @@ const index = () => {
           {/* Right Section: Flight Information Cards */}
           <Row>
             <Col>
-              <FlightInfo />
-              <FlightInfo />
-              <FlightInfo />
+              {sortedFlights.map((flight, idx) => (
+                <FlightInfo {...flight} key={idx} />
+              ))}
             </Col>
           </Row>
         </Col>
@@ -54,4 +95,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default AllFlights;

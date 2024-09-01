@@ -1,10 +1,23 @@
+import { useRouter } from "next/router";
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import { FaExchangeAlt } from "react-icons/fa";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa6";
+import { formatDate } from "../../utils";
 
-const index = () => {
+const FlightStats = () => {
+  const {
+    from,
+    to,
+    flightMode,
+    children,
+    adults,
+    tripType,
+    returnDate,
+    departureDate,
+  } = useRouter().query;
   return (
     <Container
       fluid
@@ -17,12 +30,18 @@ const index = () => {
             <FaSearch size={30} />
             <div className="ms-3">
               <div className="d-flex align-items-center">
-                <span>Dubai</span>
-                <FaExchangeAlt className="mx-2" />
-                <span>England</span>
+                <span>{from}</span>
+                {tripType === "one-way" ? (
+                  <FaArrowRight className="mx-2" />
+                ) : (
+                  <FaExchangeAlt className="mx-2" />
+                )}
+                <span>{to}</span>
               </div>
               <div>
-                <small>1 adult | economy</small>
+                <small>
+                  {adults} Adult | {children} Children | {flightMode}
+                </small>
               </div>
             </div>
           </div>
@@ -31,12 +50,20 @@ const index = () => {
         {/* Right Section */}
         <Col className="d-flex justify-content-end align-items-center">
           <div className="d-flex align-items-center">
-            <FaAngleLeft />
-            <span className="mx-2">Thu, 30 May</span>
-            <FaAngleRight className="me-4" />
-            <FaAngleLeft />
-            <span className="mx-2">Sat, 15 Jun</span>
-            <FaAngleRight />
+            {departureDate && (
+              <>
+                <FaAngleLeft />
+                <span className="mx-2">{formatDate(departureDate)}</span>
+                <FaAngleRight className="me-4" />
+              </>
+            )}
+            {returnDate && (
+              <>
+                <FaAngleLeft />
+                <span className="mx-2">{formatDate(returnDate)}</span>
+                <FaAngleRight className="me-4" />
+              </>
+            )}
           </div>
         </Col>
       </Row>
@@ -44,4 +71,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default FlightStats;

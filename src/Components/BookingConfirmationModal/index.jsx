@@ -11,12 +11,15 @@ const BookingConfirmationModal = ({
   show,
   handleClose,
   contactDetails,
+  title = "Guest",
+  url,
+  handleCallback,
 }) => {
   const router = useRouter();
   return (
     <Modal show={show} onHide={handleClose} className="cstm_modal">
       <Modal.Header>
-        <Modal.Title>Verify Guest Details</Modal.Title>
+        <Modal.Title>Verify {title} Details</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <ul>
@@ -78,7 +81,10 @@ const BookingConfirmationModal = ({
         </Button>
         <Button
           className="btn10"
-          onClick={() => router.push("/payment/booking")}
+          onClick={() => {
+            handleCallback && handleCallback();
+            router.push(url || "/payment/booking");
+          }}
         >
           Continue
         </Button>

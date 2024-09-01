@@ -1,25 +1,118 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Layout from "../layout/index";
 import Head from "next/head";
-import InnerBanner from "../Components/InnerBanner/InnerBanner";
 import Image from "next/image";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import { CiEdit } from "react-icons/ci";
-
-const data = [
-  {
-    eyeBrow: "",
-    title: "Passenger Details.",
-    imageUrl: "/images/contact-banner.png",
-  },
-];
+import BookingConfirmationModal from "../Components/BookingConfirmationModal";
+import BookingContact from "../Components/BookingContact";
+import { getLocalItem } from "../utils";
+import { useFlightContext } from "../context/FlightDataContext";
+import { initialContactDetails, initialDetails } from "../Data";
+import { useRouter } from "next/router";
+import GuestForm from "../Components/GuestForm";
+import BenifitCard from "../Components/BenifitCard";
 
 const Passengerdetails = () => {
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [adultData, setAdultData] = useState(getLocalItem("adult-guests", {}));
+  const [childrenData, setChildrenData] = useState(
+    getLocalItem("children-guests", {})
+  );
+  const [mainGuest, setMainGuest] = useState(
+    getLocalItem("main-guest", initialDetails)
+  );
+  const [contactDetails, setContactDetails] = useState(
+    getLocalItem("contact-details", initialContactDetails)
+  );
+  const { setFlightInfo } = useFlightContext();
+  const router = useRouter();
+  const { children, adults } = router.query;
+
+  const handleMainGuestChange = useCallback(
+    function (key, value) {
+      setMainGuest((prev) => ({
+        ...prev,
+        [key]: value,
+      }));
+      localStorage.setItem(
+        "main-guest",
+        JSON.stringify({
+          ...mainGuest,
+          [key]: value,
+        })
+      );
+    },
+    [mainGuest]
+  );
+
+  const handleAdultGuestChange = useCallback(
+    function (uid, key, value) {
+      setAdultData((prev) => ({
+        ...prev,
+        [uid]: {
+          ...prev[uid],
+          [key]: value,
+        },
+      }));
+      localStorage.setItem(
+        "adult-guests",
+        JSON.stringify({
+          ...adultData,
+          [uid]: {
+            ...adultData[uid],
+            [key]: value,
+          },
+        })
+      );
+    },
+    [adultData]
+  );
+
+  const handleChildrenGuestChange = useCallback(
+    function (uid, key, value) {
+      setChildrenData((prev) => ({
+        ...prev,
+        [uid]: {
+          ...prev[uid],
+          [key]: value,
+        },
+      }));
+      localStorage.setItem(
+        "children-guests",
+        JSON.stringify({
+          ...childrenData,
+          [uid]: {
+            ...childrenData[uid],
+            [key]: value,
+          },
+        })
+      );
+    },
+    [childrenData]
+  );
+
+  const handleChange = useCallback(
+    function (e) {
+      setContactDetails((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+      localStorage.setItem(
+        "contact-details",
+        JSON.stringify({
+          ...contactDetails,
+          [e.target.name]: e.target.value,
+        })
+      );
+    },
+    [contactDetails]
+  );
+
+  function handleCallback() {
+    setFlightInfo(router.query);
+    localStorage.setItem("flight-info", JSON.stringify(router.query));
+  }
 
   return (
     <>
@@ -29,62 +122,17 @@ const Passengerdetails = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>
-        <InnerBanner data={data} />
-
-        <Modal show={show} onHide={handleClose} className="cstm_modal">
-          <Modal.Header>
-            <Modal.Title>Verify Passenger Details</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <ul>
-              <li>
-                <div>
-                  <span>Adult</span>
-                  <p>David</p>
-                </div>
-
-                <div>
-                  <CiEdit />
-                </div>
-              </li>
-              <li>
-                <div>
-                  <span>Adult</span>
-                  <p>David</p>
-                </div>
-
-                <div>
-                  <CiEdit />
-                </div>
-              </li>
-
-              <li>
-                <div>
-                  <span>Contact Details</span>
-                  <p>example@gmail.com</p>
-                </div>
-
-                <div>
-                  <CiEdit />
-                </div>
-              </li>
-            </ul>
-
-            <p>
-              Please check that the name entered matches the name on the
-              passport. The details can not be edited after you continue,
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button className="btn10" onClick={handleClose}>
-              Review
-            </Button>
-            <Button className="btn10" onClick={handleClose}>
-              Continue
-            </Button>
-          </Modal.Footer>
-        </Modal>
+      <Layout noBanner>
+        <BookingConfirmationModal
+          show={show}
+          handleClose={handleClose}
+          mainGuest={mainGuest}
+          adultData={adultData}
+          childrenData={childrenData}
+          title="Passengers"
+          url={"/seatselection"}
+          handleCallback={handleCallback}
+        />
 
         <section className="passenger-details-sec">
           <div className="container">
@@ -100,194 +148,70 @@ const Passengerdetails = () => {
               </div>
               <div className="col-md-8 col-sm-12">
                 <div className="passenger-detail-mn">
-                  <div className="extra-benifit">
-                    <h6>Log in to your account to unlock extra benefits</h6>
-                    <ul className="mt-3">
-                      <li>
-                        <div>
-                          <Image
-                            alt="img"
-                            src={"/images/psngr-dtl-cin-1.png"}
-                            width={90}
-                            height={70}
-                          />
-                        </div>
-                        <div>
-                          <p>
-                            Save on your booking when you pay using Cash + Avios
-                          </p>
-                        </div>
-                      </li>
-                      <li>
-                        <div>
-                          <Image
-                            alt="img"
-                            src={"/images/psngr-dtl-cin-2.png"}
-                            width={90}
-                            height={70}
-                          />
-                        </div>
-                        <div>
-                          <p>Auto-fill your travel details</p>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="passenger-detail-inn">
-                    <h6>Passenger 1 (Adult)</h6>
+                  <BenifitCard />
 
-                    <form action="#">
-                      <div className="row">
-                        <div className="col-12">
-                          <div className="field">
-                            <label>Title</label>
-                            <ul>
-                              <li>
-                                <input type="radio" id="gender" />
-                                <label htmlFor="gender">Mr</label>
-                              </li>
-                              <li>
-                                <input type="radio" id="gender" />
-                                <label htmlFor="gender">Mrs</label>
-                              </li>
-                              <li>
-                                <input type="radio" id="gender" />
-                                <label htmlFor="gender">Ms</label>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                        <div className="col-sm-12 col-md-6">
-                          <div className="field">
-                            <input
-                              type="text"
-                              placeholder="Full Name/Middle Name"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-sm-12 col-md-6">
-                          <div className="field">
-                            <input type="text" placeholder="Last Name" />
-                          </div>
-                        </div>
+                  <GuestForm
+                    title={"Passenger 1 (Adult)"}
+                    onChange={handleMainGuestChange}
+                    type={"adult"}
+                    data={mainGuest}
+                  />
 
-                        <div className="col-sm-12 col-md-6">
-                          <div className="field date-birth">
-                            <p>Date of birth</p>
-                            <input type="date" />
-                          </div>
-                        </div>
+                  {new Array(adults ? Number(adults || "0") - 1 : undefined)
+                    .fill("0")
+                    .map((_, key) => (
+                      <GuestForm
+                        key={key}
+                        title={`Passenger ${key + 2} (Adult)`}
+                        type={"adult"}
+                        data={adultData[key]}
+                        onChange={(k, v) => handleAdultGuestChange(key, k, v)}
+                      />
+                    ))}
 
-                        <div className="col-sm-12 col-md-6">
-                          <div className="field date-birth">
-                            <select>
-                              <option value="Nationality" selected>
-                                Nationality
-                              </option>
-                              <option value="Nationality1">Nationality1</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div className="col-sm-12 col-md-12">
-                          <div className="travel-doc-head">
-                            <h6>Travel Documents</h6>
-                          </div>
-                        </div>
-                        <div className="col-sm-12 col-md-6">
-                          <div className="field date-birth">
-                            <select>
-                              <option value="Nationality" selected>
-                                Nationality
-                              </option>
-                              <option value="Nationality1">Nationality1</option>
-                            </select>
-                          </div>
-                        </div>
+                  {new Array(
+                    children && children !== "0"
+                      ? Number(children || "0") - 1
+                      : undefined
+                  )
+                    .fill("0")
+                    .map((_, key) => (
+                      <GuestForm
+                        key={key}
+                        title={`Passenger ${
+                          key + (adults ? Number(adults || "1") + 1 : 1)
+                        } (Child)`}
+                        type={"children"}
+                        data={childrenData[key]}
+                        onChange={(k, v) =>
+                          handleChildrenGuestChange(key, k, v)
+                        }
+                      />
+                    ))}
 
-                        <div className="col-sm-12 col-md-6">
-                          <div className="field date-birth">
-                            <select>
-                              <option value="Select Country" selected>
-                                Select Country
-                              </option>
-                              <option value="SelectCountry1">
-                                Select Country
-                              </option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </div>
+                  <BookingContact
+                    handleChange={handleChange}
+                    contactDetails={contactDetails}
+                  />
 
-                  <div className="passenger-expand">
-                    <h6>Passenger 2 (Adult)</h6>
-                    <p>Expand to add details</p>
-                  </div>
+                  <div className="passenger-contact-dtl passenger-detail-inn col-12">
+                    <div className="field">
+                      <input type="checkbox" name="rembeber" />
+                      <label htmlFor="rembeber">
+                        Remember the above Passenger details for future
+                        bookings.
+                      </label>
+                    </div>
 
-                  <div className="passenger-contact-dtl passenger-detail-inn">
-                    <h6>Contact Details</h6>
-                    <p>
-                      Please provide your contact details so that we can notify
-                      you the updates on your flight
-                    </p>
-                    <form action="#">
-                      <div className="row">
-                        <div className="col-md-6 col-12">
-                          <div className="field">
-                            <select>
-                              <option value="Nationality" selected>
-                                Select Primary Contact
-                              </option>
-                              <option value="Nationality1">Nationality1</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div className="col-md-6 col-12">
-                          <div className="field">
-                            <select>
-                              <option value="Nationality" selected>
-                                Select Country
-                              </option>
-                              <option value="Nationality1">Nationality1</option>
-                            </select>
-                          </div>
-                        </div>
-
-                        <div className="col-md-6 col-12">
-                          <div className="field">
-                            <input type="tel" placeholder="Phone Number" />
-                          </div>
-                        </div>
-
-                        <div className="col-md-6 col-12">
-                          <div className="field">
-                            <input type="email" placeholder="Email" />
-                          </div>
-                        </div>
-
-                        <div className="col-12">
-                          <div className="field">
-                            <input type="checkbox" name="rembeber" />
-                            <label htmlFor="rembeber">
-                              Remember the above passenger details for future
-                              bookings.
-                            </label>
-                          </div>
-
-                          <div className="btn-pessenger-btn">
-                            <button
-                              type="submit"
-                              className="btn10"
-                              onClick={handleShow}
-                            >
-                              Select Your Seats
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
+                    <div className="btn-pessenger-btn">
+                      <button
+                        type="submit"
+                        className="btn10"
+                        onClick={handleShow}
+                      >
+                        Book Now
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -26,7 +26,7 @@ export function calculateNights(checkin, checkout) {
 export function getLocalItem(itemName, defaultValue) {
     return typeof window !== "undefined" &&
         window.localStorage.getItem(itemName) !== null
-        ? JSON.parse(window.localStorage.getItem(itemName))
+        ? (typeof defaultValue === 'string' || typeof defaultValue === 'number' ? window.localStorage.getItem(itemName) : JSON.parse(window.localStorage.getItem(itemName)))
         : defaultValue
 }
 
@@ -50,4 +50,18 @@ export function generateRandomString(length) {
     }
 
     return result;
+}
+
+export function getDifferenceInHoursAndMinutes(date1, date2) {
+    const dateObj1 = new Date(date1);
+    const dateObj2 = new Date(date2);
+
+    // Calculate the difference in milliseconds
+    const diffInMs = Math.abs(dateObj2 - dateObj1);
+
+    // Convert milliseconds to hours and minutes
+    const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
+    const diffInMinutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    return { hours: diffInHours, minutes: diffInMinutes };
 }
