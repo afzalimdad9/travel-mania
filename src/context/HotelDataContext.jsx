@@ -5,12 +5,29 @@ import {
   useEffect,
   useState,
 } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { getLocalItem } from "../utils";
 
 const HotelContext = createContext(null);
+
+const initialPaymentInfo = {
+  cardNumber: "",
+  cardExpiryMonth: "",
+  cardExpiryYear: "",
+  cardCVC: "",
+  cardName: "",
+  email: "",
+  country: "",
+  postalCode: "",
+  address1: "",
+  address2: "",
+  city: "",
+  state: "",
+};
+
 export const useHotelContext = () => useContext(HotelContext);
 
 export default function HotelContextProvider({ children: child }) {
@@ -23,6 +40,9 @@ export default function HotelContextProvider({ children: child }) {
   const [categories, setCategories] = useState(getLocalItem("categories", []));
   const [city, setCity] = useState(getLocalItem("cities", []));
   const [formData, setFormData] = useState(getLocalItem("guest-details", null));
+  const [paymentInfo, setPaymentInfo] = useState(
+    getLocalItem("payment-info", initialPaymentInfo)
+  );
   const [hotels, setHotels] = useState(getLocalItem("hotelResults", []));
 
   const getData = useCallback(async () => {
@@ -118,8 +138,11 @@ export default function HotelContextProvider({ children: child }) {
         setSelectedRoom,
         formData,
         setFormData,
+        paymentInfo,
+        setPaymentInfo,
       }}
     >
+      <ToastContainer />
       {child}
     </HotelContext.Provider>
   );

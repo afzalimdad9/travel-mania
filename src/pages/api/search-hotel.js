@@ -2,7 +2,6 @@ import { hotelApiInstance } from "../../configs/hotelApi";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    console.log("searchPayload", req.body);
     const { cityCode } = req.query;
 
     try {

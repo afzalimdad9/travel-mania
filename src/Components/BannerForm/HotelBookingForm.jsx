@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Col, Dropdown, Form, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import { countries } from "iso-3166-1-alpha-2";
 import { useRouter } from "next/router";
 import { formatDate } from "../../utils";
@@ -153,7 +152,6 @@ const HotelBookingForm = () => {
   return (
     <section className="booking_form-sec">
       <div className="container">
-        <ToastContainer />
         <Form onSubmit={handleSubmit} className="booking_form-mn">
           <Row className="mb-3 trip_select-mn">
             <Col md={3}>

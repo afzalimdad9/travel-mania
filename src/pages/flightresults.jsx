@@ -5,11 +5,9 @@ const FlightResults = () => {
 
   useEffect(() => {
     const storedFlights = localStorage.getItem("flightResults");
-    console.log("storedFlights", storedFlights);
     if (storedFlights) {
       setFlights(JSON.parse(storedFlights));
     } else {
-      console.log("haha");
       return;
     }
   }, []);

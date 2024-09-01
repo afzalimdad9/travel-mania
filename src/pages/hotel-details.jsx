@@ -4,10 +4,8 @@ import { toast } from "react-toastify";
 
 import HotelDetailMain from "../Components/Safari/HotelDetailMain";
 import Layout from "../layout/index";
-import "react-toastify/dist/ReactToastify.css";
 import HotelBookingForm from "../Components/HotelBookingForm";
 import { Accordion, Form } from "react-bootstrap";
-import { ToastContainer } from "react-toastify";
 import { useHotelContext } from "../context/HotelDataContext";
 import HotelRoomsViewer from "../Components/HotelRoomsViewer";
 import HotelFacilities from "../Components/HotelFacilities";
@@ -73,7 +71,6 @@ const Details = () => {
         <HotelDetailMain />
         <section className="booking_form-sec details-page">
           <div className="container">
-            <ToastContainer />
             <Form onSubmit={handleSubmit} className="booking_form-mn">
               <HotelBookingForm formData={formData} setFormData={setFormData} />
               <HotelRoomsViewer rooms={newRooms} />
@@ -93,7 +90,6 @@ import { Container, Row, Col, Image, Card, Button } from "react-bootstrap";
 
 const AccommodationDetails = () => {
   const { hotelData } = useHotelContext();
-  console.log(hotelData);
   return (
     <Container>
       <Row className="mb-3">

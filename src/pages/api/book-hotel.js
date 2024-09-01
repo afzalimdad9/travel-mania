@@ -1,30 +1,22 @@
-import axios from "axios";
+import { hotelApiInstance } from "../../configs/hotelApi";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
-    const { tokenId, searchPayload } = req.body;
-
     try {
-      const response = await axios.post(
-        "https://apistaging.tboair.com/InternalAirService.svc/rest/Search/",
-        searchPayload,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenId}`,
-            "Content-Type": "application/json",
-          },
-        }
+      const response = await hotelApiInstance.post(
+        req.query.path,
+        req.body,
       );
       res.status(200).json(response.data);
     } catch (error) {
       console.error(
-        "Error during flight search:",
+        "Error during hotel search:",
         error.response?.data || error.message
       );
       res
         .status(500)
         .json({
-          error: "Error during flight search",
+          error: "Error during hotel search",
           details: error.response?.data || error.message,
         });
     }

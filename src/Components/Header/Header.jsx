@@ -10,7 +10,6 @@ import { VscChevronDown } from "react-icons/vsc";
 import { IoIosLogOut } from "react-icons/io";
 import { PiListDashesLight } from "react-icons/pi";
 
-
 const headerData = [
   {
     title: "Find Flight",
@@ -29,12 +28,15 @@ const iconMapping = {
   LiaBedSolid: LiaBedSolid,
 };
 
-const Header = ({noBanner}) => {
+const Header = ({ noBanner }) => {
   const [mobileMenu, setMobileMenu] = useState(false);
   const { user, loginWithRedirect, isAuthenticated, logout } = useAuth0();
-  console.log("user",user)
   return (
-    <section className={`${noBanner ? "header-Bg-blue":"header-Bg-trans"} header_desktop`}>
+    <section
+      className={`${
+        noBanner ? "header-Bg-blue" : "header-Bg-trans"
+      } header_desktop`}
+    >
       <div className="container">
         <div className="row">
           <div className="col-md-4 col-sm-12 d-none  d-md-block">
@@ -76,31 +78,34 @@ const Header = ({noBanner}) => {
               <ul>
                 {isAuthenticated ? (
                   <li className="drop_down">
-                    <div className="header-profile"> 
-                     <Image width={30} height={30} src={user?.picture} alt="image" />
-                     <VscChevronDown/>
+                    <div className="header-profile">
+                      <Image
+                        width={30}
+                        height={30}
+                        src={user?.picture}
+                        alt="image"
+                      />
+                      <VscChevronDown />
                     </div>
                     <ul>
                       <li>
                         <div className="inner_header-profile">
-                          <Image width={30} height={30} src={user?.picture} alt="image" />
+                          <Image
+                            width={30}
+                            height={30}
+                            src={user?.picture}
+                            alt="image"
+                          />
                           <p> {user?.nickname}</p>
-                        </div> 
-                      </li>
-                     <li>
-                     
-                     <PiListDashesLight/>
-                        <Link
-                          href={"/dashboard"}>
-                          Dashboard
-                        </Link>
+                        </div>
                       </li>
                       <li>
-                      <IoIosLogOut/>
-                        <Link
-                          href={"/"}
-                          onClick={() => logout()}
-                        >
+                        <PiListDashesLight />
+                        <Link href={"/dashboard"}>Dashboard</Link>
+                      </li>
+                      <li>
+                        <IoIosLogOut />
+                        <Link href={"/"} onClick={() => logout()}>
                           Logout
                         </Link>
                       </li>
@@ -111,15 +116,15 @@ const Header = ({noBanner}) => {
                 )}
                 <li>
                   {isAuthenticated ? (
-                    ''
+                    ""
                   ) : (
                     <Link
-                    href={"/"}
-                    className="btnwhite"
-                    onClick={() => loginWithRedirect()}
-                  >
-                    Login
-                  </Link>
+                      href={"/"}
+                      className="btnwhite"
+                      onClick={() => loginWithRedirect()}
+                    >
+                      Login
+                    </Link>
                   )}
                 </li>
               </ul>

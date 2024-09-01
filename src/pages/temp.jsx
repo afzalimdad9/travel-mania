@@ -96,7 +96,6 @@ const FlightBookingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("formData", formData);
       alert("Form submitted successfully!");
     }
   };

@@ -25,8 +25,6 @@ export const authenticate = async () => {
     const response = await axios.post("/api/authenticate", credentials);
     const data = response.data;
 
-    console.log("data", data);
-
     if (data && data.TokenId && data.TrackingId) {
       const currentTime = new Date().getTime();
       localStorage.setItem("tokenId", data.TokenId);

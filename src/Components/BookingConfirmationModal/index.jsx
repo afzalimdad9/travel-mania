@@ -2,6 +2,7 @@ import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { CiEdit } from "react-icons/ci";
+import { useRouter } from "next/router";
 
 const BookingConfirmationModal = ({
   adultData,
@@ -11,6 +12,7 @@ const BookingConfirmationModal = ({
   handleClose,
   contactDetails,
 }) => {
+  const router = useRouter();
   return (
     <Modal show={show} onHide={handleClose} className="cstm_modal">
       <Modal.Header>
@@ -74,7 +76,10 @@ const BookingConfirmationModal = ({
         <Button className="btn10" onClick={handleClose}>
           Review
         </Button>
-        <Button className="btn10" onClick={handleClose}>
+        <Button
+          className="btn10"
+          onClick={() => router.push("/payment/booking")}
+        >
           Continue
         </Button>
       </Modal.Footer>

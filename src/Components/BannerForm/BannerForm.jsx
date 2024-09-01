@@ -3,10 +3,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Button, Col, Dropdown, Form, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { LiaExchangeAltSolid } from "react-icons/lia";
 import { authenticate } from "../../pages/api/flight";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const FlightBookingForm = () => {
   const [formData, setFormData] = useState({
@@ -154,9 +153,7 @@ const FlightBookingForm = () => {
           searchPayload,
         });
         const flightResults = response.data;
-        console.log("flightResults", flightResults.Response);
         if (flightResults && flightResults.Response.ResponseStatus === 1) {
-          console.log("flightResults", flightResults.Response.Results);
           localStorage.setItem(
             "flightResults",
             JSON.stringify(flightResults.Response.Results)
@@ -183,7 +180,6 @@ const FlightBookingForm = () => {
   return (
     <section className="booking_form-sec">
       <div className="container">
-        <ToastContainer />
         <Form onSubmit={handleSubmit} className="booking_form-mn">
           <Row className="mb-3 trip_select-mn">
             <Col md={2}>
