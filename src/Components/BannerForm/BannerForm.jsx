@@ -111,14 +111,11 @@ const FlightBookingForm = () => {
       const searchPayload = {
         EndUserIp: "192.168.11.120",
         TokenId: tokenId,
-        BookingMode: "5",
         AdultCount: formData.passengers.adults,
         ChildCount: formData.passengers.children,
         InfantCount: 0,
-        DirectFlight: false,
-        OneStopFlight: false,
         JourneyType: formData.tripType === "round-trip" ? 2 : 1,
-        PreferredAirlines: null,
+        BookingMode: "5",
         Segments: [
           {
             Origin: formData.from,
@@ -127,8 +124,8 @@ const FlightBookingForm = () => {
               formData.flightMode === "Economy"
                 ? 2
                 : formData.flightMode === "Business"
-                ? 3
-                : 4,
+                ? 4
+                : 3,
             PreferredDepartureTime: formData.departureDate,
           },
           formData.tripType === "round-trip" && {
@@ -138,13 +135,11 @@ const FlightBookingForm = () => {
               formData.flightMode === "Economy"
                 ? 2
                 : formData.flightMode === "Business"
-                ? 3
-                : 4,
+                ? 4
+                : 3,
             PreferredDepartureTime: formData.returnDate,
           },
         ].filter(Boolean),
-        Sources: null,
-        PreferredCurrency: "USD",
       };
 
       try {
@@ -153,6 +148,7 @@ const FlightBookingForm = () => {
           searchPayload,
         });
         const flightResults = response.data;
+        console.log(flightResults);
         if (flightResults && flightResults.Response.ResponseStatus === 1) {
           localStorage.setItem(
             "flightResults",

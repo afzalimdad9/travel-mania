@@ -1,21 +1,12 @@
-import axios from "axios";
+import { searchFlights } from "./flight";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
     const { tokenId, searchPayload } = req.body;
 
     try {
-      const response = await axios.post(
-        "https://apistaging.tboair.com/InternalAirService.svc/rest/Search/",
-        searchPayload,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenId}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      res.status(200).json(response.data);
+      const response = await searchFlights(tokenId, searchPayload);
+      res.status(200).json(response);
     } catch (error) {
       console.error(
         "Error during flight search:",

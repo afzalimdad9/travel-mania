@@ -39,15 +39,7 @@ export const authenticate = async () => {
   }
 };
 
-export const searchFlights = async (searchPayload) => {
-  const authResponse = await authenticate();
-  if (!authResponse) {
-    console.error("Failed to authenticate.");
-    return null;
-  }
-
-  const { tokenId } = authResponse;
-
+export const searchFlights = async (tokenId, searchPayload) => {
   try {
     const response = await axios.post(
       "https://apistaging.tboair.com/InternalAirService.svc/rest/Search/",
@@ -58,11 +50,7 @@ export const searchFlights = async (searchPayload) => {
         },
       }
     );
-    if (response.data.ResponseStatus === 1) {
-      return response.data.Results;
-    } else {
-      console.error("Flight search failed:", response.data.ErrorMessage);
-    }
+    return response.data;
   } catch (error) {
     console.error("Error during flight search:", error);
   }
