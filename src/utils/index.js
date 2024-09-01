@@ -22,3 +22,21 @@ export function calculateNights(checkin, checkout) {
 
     return differenceInNights;
 }
+
+export function getLocalItem(itemName, defaultValue) {
+    return typeof window !== "undefined" &&
+        window.localStorage.getItem(itemName) !== null
+        ? JSON.parse(window.localStorage.getItem(itemName))
+        : defaultValue
+}
+
+export function formatDate(dateString) {
+    const date = new Date(dateString);
+    const formattedDate =
+        date.getUTCFullYear() +
+        "-" +
+        String(date.getUTCMonth() + 1).padStart(2, "0") +
+        "-" +
+        String(date.getUTCDate() + 1).padStart(2, "0");
+    return formattedDate;
+}

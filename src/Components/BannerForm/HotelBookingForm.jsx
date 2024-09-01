@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { countries } from "iso-3166-1-alpha-2";
 import { useRouter } from "next/router";
+import { formatDate } from "../../utils";
 
 const HotelBookingForm = () => {
   const router = useRouter();
@@ -21,17 +22,6 @@ const HotelBookingForm = () => {
   });
 
   const [passengerDropdown, setPassengerDropdown] = useState(false);
-
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    const formattedDate =
-      date.getUTCFullYear() +
-      "-" +
-      String(date.getUTCMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(date.getUTCDate() + 1).padStart(2, "0");
-    return formattedDate;
-  }
 
   const handlePassengerChange = (type, value) => {
     setFormData((prev) => ({

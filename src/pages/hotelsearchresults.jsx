@@ -196,6 +196,15 @@ const HotelSearchResults = () => {
                           (s) => !result.HotelFacilities.includes(s)
                         ),
                       });
+                      localStorage.setItem(
+                        "hotelData",
+                        JSON.stringify({
+                          ...result,
+                          notIncluded: categories.filter(
+                            (s) => !result.HotelFacilities.includes(s)
+                          ),
+                        })
+                      );
                       router.push({
                         pathname: "/hotel-details",
                         query: {

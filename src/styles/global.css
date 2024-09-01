@@ -2393,6 +2393,7 @@ body {
   #main_cstm-class .flight_card-sec {
     padding: 80px 0;
   }
+
   #main_cstm-class .flight_card img {
     width: 100%;
     -o-object-fit: cover;
@@ -2692,11 +2693,18 @@ body {
   }
 } /*# sourceMappingURL=global.css.map */
 
-.price_tags {
-  font-size: 16px !important;
-}
 .select_trip.guests {
   width: 45% !important;
+}
+
+@media (min-width: 300px) and (max-width: 768px) {
+  .select_trip.guests {
+    width: 100% !important;
+  }
+}
+
+.price_tags {
+  font-size: 16px !important;
 }
 
 .details-page {

@@ -9,7 +9,8 @@ const HotelRoomsViewer = ({ rooms }) => {
   const {
     query: { adults, children },
   } = useRouter();
-  const { hotelData } = useHotelContext();
+  const { hotelData, setSelectedRoom, setFormData } = useHotelContext();
+  const router = useRouter();
 
   return (
     <Container>
@@ -44,8 +45,8 @@ const HotelRoomsViewer = ({ rooms }) => {
                 </h6>
                 {value
                   .map((r) => r.RoomPromotion.join(","))
-                  .map((r) => (
-                    <h6 key={r}>{r}</h6>
+                  .map((r, id) => (
+                    <h6 key={id}>{r}</h6>
                   ))}
 
                 <button className="mt-2">See Room Details &gt;</button>
@@ -55,7 +56,19 @@ const HotelRoomsViewer = ({ rooms }) => {
           <Col xs={6} className="room_card">
             {value.map((v, id) => (
               <Row key={id}>
-                <BookingOptions room={v} />
+                <BookingOptions
+                  selectedRoom={() => {
+                    setSelectedRoom(v);
+                    localStorage.setItem("selectedRoom", JSON.stringify(v));
+                    localStorage.setItem(
+                      "guest-details",
+                      JSON.stringify(router.query)
+                    );
+                    setFormData(router.query);
+                    router.push("/guestdetails");
+                  }}
+                  room={v}
+                />
               </Row>
             ))}
           </Col>
@@ -67,7 +80,7 @@ const HotelRoomsViewer = ({ rooms }) => {
 
 export default HotelRoomsViewer;
 
-function BookingOptions({ room }) {
+function BookingOptions({ room, selectedRoom }) {
   const {
     query: { checkin, checkout },
   } = useRouter();
@@ -132,7 +145,12 @@ function BookingOptions({ room }) {
                   {calculateNights(checkin, checkout)} nights){" "}
                 </p>
                 <p className="mb-3"> VAT included </p>
-                <button className="btn btn-primary btn-block">Book</button>
+                <button
+                  onClick={selectedRoom}
+                  className="btn btn-primary btn-block"
+                >
+                  Book
+                </button>
               </Col>
             </Row>
           </div>

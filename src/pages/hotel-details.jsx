@@ -6,7 +6,7 @@ import HotelDetailMain from "../Components/Safari/HotelDetailMain";
 import Layout from "../layout/index";
 import "react-toastify/dist/ReactToastify.css";
 import HotelBookingForm from "../Components/HotelBookingForm";
-import { Form } from "react-bootstrap";
+import { Accordion, Form } from "react-bootstrap";
 import { ToastContainer } from "react-toastify";
 import { useHotelContext } from "../context/HotelDataContext";
 import HotelRoomsViewer from "../Components/HotelRoomsViewer";
@@ -81,9 +81,171 @@ const Details = () => {
           </div>
         </section>
         <HotelFacilities facilities={hotelData?.HotelFacilities || []} />
+        <AccommodationDetails />
       </Layout>
     </>
   );
 };
 
 export default Details;
+
+import { Container, Row, Col, Image, Card, Button } from "react-bootstrap";
+
+const AccommodationDetails = () => {
+  const { hotelData } = useHotelContext();
+  console.log(hotelData);
+  return (
+    <Container>
+      <Row className="mb-3">
+        <Col md={6}>
+          <h4>Location</h4>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotelData?.Attractions
+                ? Object.values(hotelData?.Attractions)?.[0]
+                : "",
+            }}
+          ></p>
+        </Col>
+        <Col md={6}>
+          <div className="w-100">
+            <iframe
+              width="100%"
+              height="600"
+              src={`https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=${hotelData?.Address}+(${hotelData?.HotelName})&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed`}
+            ></iframe>
+          </div>
+        </Col>
+      </Row>
+      <Row className="mb-3">
+        <Col md={12}>
+          <h4>Description of the accommodation</h4>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: hotelData?.Description || "",
+            }}
+          ></p>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={12}>
+          <h4>Checkin and important information</h4>
+          <h6 className="mt-3">Check-In</h6>
+          <p>
+            Checkin time {hotelData?.CheckInTime} - {hotelData?.CheckOutTime}{" "}
+            Minimum check-in age: 18
+          </p>
+          <h6 className="mt-3">Check-Out</h6>
+          <p>Checkout time {hotelData?.CheckOutTime}</p>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={6}>
+          <h4 className="mb-3">Frequently asked questions</h4>
+          <Accordion defaultActiveKey="0">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>
+                What time is check in and check out?
+              </Accordion.Header>
+              <Accordion.Body>
+                Checkin time {hotelData?.CheckInTime}. And Check Out time{" "}
+                {hotelData?.CheckOutTime}
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="1">
+              <Accordion.Header>
+                Is breakfast included with the stay?
+              </Accordion.Header>
+              <Accordion.Body>
+                {(hotelData?.HotelFacilities || [])?.some((d) =>
+                  d.toLowerCase().includes("breakfast")
+                )
+                  ? "Yes"
+                  : "No"}
+                , Breakfast{" "}
+                {(hotelData?.HotelFacilities || [])?.some((d) =>
+                  d.toLowerCase().includes("breakfast")
+                )
+                  ? "is"
+                  : "is not"}{" "}
+                included with stay
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="2">
+              <Accordion.Header>Do you offer free WiFi?</Accordion.Header>
+              <Accordion.Body>
+                {(hotelData?.HotelFacilities || [])?.some((d) =>
+                  d.toLowerCase().includes("wifi")
+                )
+                  ? "Yes"
+                  : "No"}
+                , we{" "}
+                {(hotelData?.HotelFacilities || [])?.some((d) =>
+                  d.toLowerCase().includes("wifi")
+                )
+                  ? "offer"
+                  : "do not offer"}{" "}
+                free wifi.
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="3">
+              <Accordion.Header>
+                Reporting available at the hotel?
+              </Accordion.Header>
+              <Accordion.Body>
+                {(hotelData?.HotelFacilities || [])?.some((d) =>
+                  d.toLowerCase().includes("reporting")
+                )
+                  ? "Yes"
+                  : "No"}
+                , Reporing{" "}
+                {(hotelData?.HotelFacilities || [])?.some((d) =>
+                  d.toLowerCase().includes("reporting")
+                )
+                  ? "is"
+                  : "is not"}{" "}
+                available at the hotel.
+              </Accordion.Body>
+            </Accordion.Item>
+            <Accordion.Item eventKey="4">
+              <Accordion.Header>Do you have a fitness center?</Accordion.Header>
+              <Accordion.Body>
+                {(hotelData?.HotelFacilities || [])?.includes(
+                  "Fitness facilities"
+                )
+                  ? "Yes"
+                  : "No"}
+                , we{" "}
+                {(hotelData?.HotelFacilities || [])?.includes(
+                  "Fitness facilities"
+                )
+                  ? ""
+                  : "Don't"}{" "}
+                a have finess center
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={6}>
+          <h4 className="my-3">Looking for specific information?</h4>
+          <h6 className="my-3">Search product info, FAQs, reviews</h6>
+          <input
+            type="text"
+            placeholder="Type a keyword"
+            className="w-50 py-3"
+          />
+        </Col>
+      </Row>
+      <Row className="my-3">
+        <Col md={3}>
+          <h6>Want to Suggest something?</h6>
+        </Col>
+        <Col md={3}>
+          <Button variant="outline-primary">Leave feedback</Button>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
