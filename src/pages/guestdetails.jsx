@@ -1,31 +1,14 @@
-import React, { useCallback, useState } from "react";
-import Layout from "../layout/index";
 import Head from "next/head";
-import Image from "next/image";
-import { useHotelContext } from "../context/HotelDataContext";
-import GuestForm from "../Components/GuestForm";
-import { formatDate, getLocalItem } from "../utils";
+import React, { useCallback, useState } from "react";
+import BenifitCard from "../Components/BenifitCard";
 import BookingConfirmationModal from "../Components/BookingConfirmationModal";
 import BookingContact from "../Components/BookingContact";
-import BenifitCard from "../Components/BenifitCard";
 import BookingSidebar from "../Components/BookingSidebar";
-
-const initialDetails = {
-  gender: "mr",
-  firstName: "",
-  lastName: "",
-  dob: formatDate(new Date().toISOString()),
-  nationality: "",
-  documentType: "",
-  country: "",
-};
-
-const initialContactDetails = {
-  primaryContact: "",
-  nationality: "",
-  phone: "",
-  email: "",
-};
+import GuestForm from "../Components/GuestForm";
+import { useHotelContext } from "../context/HotelDataContext";
+import { initialContactDetails, initialDetails } from "../Data";
+import Layout from "../layout/index";
+import { getLocalItem } from "../utils";
 
 const Passengerdetails = () => {
   const [show, setShow] = useState(false);

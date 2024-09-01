@@ -4,6 +4,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { useRouter } from "next/router";
 import "../styles/global.css";
 import HotelContextProvider from "../context/HotelDataContext";
+import FlightContextProvider from "../context/FlightDataContext";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -20,7 +21,9 @@ export default function App({ Component, pageProps }) {
       onRedirectCallback={onRedirectCallback}
     >
       <HotelContextProvider>
-        <Component {...pageProps} />
+        <FlightContextProvider>
+          <Component {...pageProps} />
+        </FlightContextProvider>
       </HotelContextProvider>
     </Auth0Provider>
   );

@@ -11,23 +11,9 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { getLocalItem } from "../utils";
+import { initialPaymentInfo } from "../Data";
 
 const HotelContext = createContext(null);
-
-const initialPaymentInfo = {
-  cardNumber: "",
-  cardExpiryMonth: "",
-  cardExpiryYear: "",
-  cardCVC: "",
-  cardName: "",
-  email: "",
-  country: "",
-  postalCode: "",
-  address1: "",
-  address2: "",
-  city: "",
-  state: "",
-};
 
 export const useHotelContext = () => useContext(HotelContext);
 
@@ -38,8 +24,10 @@ export default function HotelContextProvider({ children: child }) {
   const [selectedRoom, setSelectedRoom] = useState(
     getLocalItem("selectedRoom", null)
   );
-  const [categories, setCategories] = useState(getLocalItem("categories", []));
-  const [city, setCity] = useState(getLocalItem("cities", []));
+  const [categories, setCategories] = useState(
+    getLocalItem("hotel-categories", [])
+  );
+  const [city, setCity] = useState(getLocalItem("hotel-cities", []));
   const [formData, setFormData] = useState(getLocalItem("guest-details", null));
   const [paymentInfo, setPaymentInfo] = useState(
     getLocalItem("payment-info", initialPaymentInfo)
@@ -93,11 +81,11 @@ export default function HotelContextProvider({ children: child }) {
       ]);
       setCategories(result.map((d) => d.HotelFacilities).flat());
       localStorage.setItem(
-        "categories",
+        "hotel-categories",
         JSON.stringify(result.map((d) => d.HotelFacilities).flat())
       );
       setCity(cityResult);
-      localStorage.setItem("cities", JSON.stringify(cityResult));
+      localStorage.setItem("hotel-cities", JSON.stringify(cityResult));
       setHotels(
         apiResult?.HotelResult.map((h) => ({
           ...h,
