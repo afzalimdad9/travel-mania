@@ -4,7 +4,11 @@ import Layout from "../../layout/index";
 import Image from "next/image";
 import Link from "next/link";
 import { useHotelContext } from "../../context/HotelDataContext";
-import { calculateNights, getLocalItem } from "../../utils";
+import {
+  calculateNights,
+  generateRandomString,
+  getLocalItem,
+} from "../../utils";
 import getSymbolFromCurrency from "currency-symbol-map";
 import months from "months";
 import { useRouter } from "next/router";
@@ -63,6 +67,9 @@ const Payment = () => {
     const checkInDate = new Date(formData?.checkin);
     const currentDate = new Date();
 
+    const BookingReferenceId = generateRandomString(10);
+    const ClientReferenceId = generateRandomString(10);
+
     const bookingReqParams = {
       BookingCode: selectedRoom?.BookingCode,
       CustomerDetails: [
@@ -91,8 +98,8 @@ const Payment = () => {
           ],
         },
       ],
-      ClientReferenceId: "1626158614415-92957459",
-      BookingReferenceId: "AVw12qw3218",
+      ClientReferenceId,
+      BookingReferenceId,
       TotalFare: paymentInfo?.address1,
       EmailId: paymentInfo?.email || contactDetails?.email,
       PhoneNumber: paymentInfo?.phone || contactDetails?.phone,
@@ -139,17 +146,31 @@ const Payment = () => {
 
       localStorage.setItem(
         "booking-result",
-        JSON.stringify(result?.HotelResult)
+        JSON.stringify({
+          ...result,
+          BookingReferenceId,
+          ClientReferenceId,
+        })
       );
+
+      const bookingDetail = await axios
+        .post("/api/booking-detail", {
+          BookingReferenceId,
+          ConfirmationNumber: result?.Status?.ConfirmationNumber,
+        })
+        .then((r) => r.data)
+        .catch((e) => {
+          console.error(e);
+          return {};
+        });
+      localStorage.setItem("bookingDetail", JSON.stringify(bookingDetail));
 
       toast.success("Payment Successful !");
 
-      localStorage.removeItem("children-guests");
-      localStorage.removeItem("adult-guests");
-      localStorage.removeItem("guest-details");
-      localStorage.removeItem("hotelData");
-      localStorage.removeItem("selectedRoom");
-      localStorage.removeItem("main-guest");
+      router.push({
+        pathname: "/hotel-details",
+        query: formData,
+      });
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong");

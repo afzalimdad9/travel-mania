@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { toast, ToastContainer } from "react-toastify";
-import "react-datepicker/dist/react-datepicker.css";
+import "react-toastify/ReactToastify.min.css";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { getLocalItem } from "../utils";

@@ -40,3 +40,14 @@ export function formatDate(dateString) {
         String(date.getUTCDate() + 1).padStart(2, "0");
     return formattedDate;
 }
+export function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
