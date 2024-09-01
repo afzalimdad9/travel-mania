@@ -46,10 +46,19 @@ const FlightCard = (props) => {
         })
         .then((res) => res.data.Response.Results);
 
-      setSelectedFlight({ ...props, FareRules, FareQuote });
+      const SSR = await axios
+        .post("/api/ssr", {
+          EndUserIp: "192.168.10.10",
+          TokenId,
+          TraceId,
+          ResultIndex: props.ResultIndex,
+        })
+        .then((res) => res.data.Response);
+
+      setSelectedFlight({ ...props, FareRules, FareQuote, SSR });
       localStorage.setItem(
         "selectedFlight",
-        JSON.stringify({ ...props, FareRules, FareQuote })
+        JSON.stringify({ ...props, FareRules, FareQuote, SSR })
       );
 
       router.push({

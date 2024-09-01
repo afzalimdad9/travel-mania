@@ -153,7 +153,7 @@ const FlightBookingForm = () => {
         DirectFlight: "false",
         OneStopFlight: "false",
         PreferredAirlines: null,
-        BookingMode: "5",
+        BookingMode: tripType === "round-trip" ? 2 : 1,
         Segments: [
           {
             Origin: formData.from,
