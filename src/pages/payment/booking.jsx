@@ -144,15 +144,6 @@ const Payment = () => {
         return toast.error(result?.Status?.Description);
       }
 
-      localStorage.setItem(
-        "booking-result",
-        JSON.stringify({
-          ...result,
-          BookingReferenceId,
-          ClientReferenceId,
-        })
-      );
-
       const bookingDetail = await axios
         .post("/api/booking-detail", {
           BookingReferenceId,
@@ -163,13 +154,46 @@ const Payment = () => {
           console.error(e);
           return {};
         });
-      localStorage.setItem("bookingDetail", JSON.stringify(bookingDetail));
+
+      const prevBookings = getLocalItem("booking-result", []);
+
+      localStorage.setItem(
+        "booking-result",
+        JSON.stringify([
+          ...prevBookings,
+          {
+            ...result,
+            BookingReferenceId,
+            ClientReferenceId,
+            bookingDetail,
+            formData,
+            hotelData,
+            selectedRoom,
+            paymentInfo,
+            adultData,
+            childrenData,
+            mainGuest,
+            contactDetails,
+          },
+        ])
+      );
 
       toast.success("Payment Successful !");
 
+      localStorage.removeItem("guest-details");
+      localStorage.removeItem("main-guest");
+      localStorage.removeItem("selectedRoom");
+      localStorage.removeItem("hotelData");
+      localStorage.removeItem("paymentInfo");
+      localStorage.removeItem("adult-guests");
+      localStorage.removeItem("children-guests");
+      localStorage.removeItem("contact-details");
+
       router.push({
-        pathname: "/hotel-details",
-        query: formData,
+        pathname: "/booking-details",
+        query: {
+          bookingId: BookingReferenceId,
+        },
       });
     } catch (error) {
       console.error(error);
