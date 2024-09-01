@@ -10,6 +10,7 @@ import { initialContactDetails, initialDetails } from "../Data";
 import { useRouter } from "next/router";
 import GuestForm from "../Components/GuestForm";
 import BenifitCard from "../Components/BenifitCard";
+import TripSummary from "../Components/TripSummary";
 
 const Passengerdetails = () => {
   const [show, setShow] = useState(false);
@@ -216,67 +217,7 @@ const Passengerdetails = () => {
                 </div>
               </div>
               <div className="col-md-4 col-sm-12">
-                <div className="passn-dtl-sidbar">
-                  <h6>Your trip summary</h6>
-                  <div className="trip-sum-dtl">
-                    <h6>Outbound flight</h6>
-                    <div className="flex-div">
-                      <div className="trip-dv-1">
-                        <span>Thu, 30 May</span>
-                        <p>10:25</p>
-                        <p>DBI</p>
-                      </div>
-                      <div className="trip-sum-img">
-                        <p>08:15</p>
-                        <Image
-                          width={160}
-                          height={13}
-                          src="/images/trip-sum-img.png"
-                          alt="img"
-                        />
-                      </div>
-
-                      <div className="trip-dv-1">
-                        <span>Thu, 30 May</span>
-                        <p>10:25</p>
-                        <p>LDN</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="trip-sum-dtl">
-                    <h6>Outbound flight</h6>
-                    <div className="flex-div">
-                      <div className="trip-dv-1">
-                        <span>Thu, 30 May</span>
-                        <p>10:25</p>
-                        <p>DBI</p>
-                      </div>
-                      <div className="trip-sum-img">
-                        <p>08:15</p>
-                        <Image
-                          width={160}
-                          height={13}
-                          src="/images/trip-sum-img.png"
-                          alt="img"
-                        />
-                      </div>
-
-                      <div className="trip-dv-1">
-                        <span>Thu, 30 May</span>
-                        <p>10:25</p>
-                        <p>LDN</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="trip-sum-price">
-                    <h6>
-                      <span className="prc-ttl">Total trip price:</span>{" "}
-                      <span className="prc">603840.00 PKR</span>
-                    </h6>
-                  </div>
-                </div>
+                <TripSummary />
               </div>
             </div>
           </div>

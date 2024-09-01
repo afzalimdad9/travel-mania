@@ -92,92 +92,99 @@ const FlightCard = (props) => {
             </Col>
           </Row>
           <hr />
-          <Row className="align-items-center">
-            <Col>
-              <h5 className="mb-0">
-                {props?.Segments?.[0]?.[0]?.Origin?.DepTime?.split("T")?.[1]}
-              </h5>
-              <p className="text-primary">
-                {props?.Segments?.[0]?.[0]?.Origin?.Airport?.CountryName}
-              </p>
-            </Col>
-            <Col xs="auto" className="text-center">
-              <span>
-                {
-                  getDifferenceInHoursAndMinutes(
-                    props?.Segments?.[0]?.[0]?.Origin?.DepTime,
-                    props?.Segments?.[0]?.[0]?.Destination?.ArrTime
-                  ).hours
-                }
-                hr{" "}
-                {
-                  getDifferenceInHoursAndMinutes(
-                    props?.Segments?.[0]?.[0]?.Origin?.DepTime,
-                    props?.Segments?.[0]?.[0]?.Destination?.ArrTime
-                  ).minutes
-                }
-                m
-              </span>
-              <hr style={{ border: "1px solid #6c757d", width: "100%" }} />
-              <i className="bi bi-airplane" style={{ fontSize: "20px" }}></i>
-            </Col>
-            <Col>
-              <h5 className="mb-0">
-                {
-                  props?.Segments?.[0]?.[0]?.Destination?.ArrTime?.split(
-                    "T"
-                  )?.[1]
-                }
-              </h5>
-              <p className="text-primary">
-                {props?.Segments?.[0]?.[0]?.Destination?.Airport?.CountryName}
-              </p>
-            </Col>
-          </Row>
-          <hr />
-          {tripType !== "one-way" && (
-            <Row className="align-items-center">
+          {(props?.Segments?.[0] || []).map((seg, idx) => (
+            <Row className="align-items-center" key={idx}>
               <Col>
                 <h5 className="mb-0">
-                  {props?.Segments?.[0]?.[1]?.Origin?.DepTime?.split("T")?.[1]}
+                  {seg?.Origin?.DepTime?.split("T")?.[1]}
                 </h5>
                 <p className="text-primary">
-                  {props?.Segments?.[0]?.[1]?.Origin?.Airport?.CountryName}
+                  {seg?.Origin?.Airport?.CityName},{" "}
+                  {seg?.Origin?.Airport?.CountryName}
                 </p>
               </Col>
               <Col xs="auto" className="text-center">
                 <span>
                   {
                     getDifferenceInHoursAndMinutes(
-                      props?.Segments?.[0]?.[1]?.Origin?.DepTime,
-                      props?.Segments?.[0]?.[1]?.Destination?.ArrTime
+                      seg?.Origin?.DepTime,
+                      seg?.Destination?.ArrTime
                     ).hours
                   }
                   hr{" "}
                   {
                     getDifferenceInHoursAndMinutes(
-                      props?.Segments?.[0]?.[1]?.Origin?.DepTime,
-                      props?.Segments?.[0]?.[1]?.Destination?.ArrTime
+                      seg?.Origin?.DepTime,
+                      seg?.Destination?.ArrTime
                     ).minutes
-                  }{" "}
-                  minutes
+                  }
+                  m
                 </span>
                 <hr style={{ border: "1px solid #6c757d", width: "100%" }} />
                 <i className="bi bi-airplane" style={{ fontSize: "20px" }}></i>
               </Col>
               <Col>
                 <h5 className="mb-0">
-                  {
-                    props?.Segments?.[0]?.[1]?.Destination?.ArrTime?.split(
-                      "T"
-                    )?.[1]
-                  }
+                  {seg?.Destination?.ArrTime?.split("T")?.[1]}
                 </h5>
                 <p className="text-primary">
-                  {props?.Segments?.[0]?.[1]?.Destination?.Airport?.CountryName}
+                  {seg?.Destination?.Airport?.CityName},{" "}
+                  {seg?.Destination?.Airport?.CountryName}
                 </p>
               </Col>
             </Row>
+          ))}
+          <hr />
+          {tripType !== "one-way" && (
+            <>
+              {(props?.Segments?.[0] || []).map((seg, idx) => (
+                <Row className="align-items-center" key={idx}>
+                  <Col>
+                    <h5 className="mb-0">
+                      {seg?.Destination?.ArrTime?.split("T")?.[1]}
+                    </h5>
+                    <p className="text-primary">
+                      {seg?.Destination?.Airport?.CityName},{" "}
+                      {seg?.Destination?.Airport?.CountryName}
+                    </p>
+                  </Col>
+                  <Col xs="auto" className="text-center">
+                    <span>
+                      {
+                        getDifferenceInHoursAndMinutes(
+                          seg?.Origin?.DepTime,
+                          seg?.Destination?.ArrTime
+                        ).hours
+                      }
+                      hr{" "}
+                      {
+                        getDifferenceInHoursAndMinutes(
+                          seg?.Origin?.DepTime,
+                          seg?.Destination?.ArrTime
+                        ).minutes
+                      }
+                      m
+                    </span>
+                    <hr
+                      style={{ border: "1px solid #6c757d", width: "100%" }}
+                    />
+                    <i
+                      className="bi bi-airplane"
+                      style={{ fontSize: "20px" }}
+                    ></i>
+                  </Col>
+                  <Col>
+                    <h5 className="mb-0">
+                      {seg?.Origin?.DepTime?.split("T")?.[1]}
+                    </h5>
+                    <p className="text-primary">
+                      {seg?.Origin?.Airport?.CityName},{" "}
+                      {seg?.Origin?.Airport?.CountryName}
+                    </p>
+                  </Col>
+                </Row>
+              ))}
+            </>
           )}
         </Col>
 
@@ -185,7 +192,7 @@ const FlightCard = (props) => {
         <Col md={4} className="text-center">
           <h4 className="mb-4">
             {getSymbolFromCurrency(props?.Fare?.Currency)}
-            {props?.Fare?.BaseFare}
+            {props?.Fare?.BaseFare * 2}
           </h4>
           <Button variant="primary" onClick={selectedFlight} size="lg">
             Book Now
