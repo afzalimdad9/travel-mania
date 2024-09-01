@@ -1,12 +1,13 @@
 import Image from "next/image";
-import React, { useState } from "react";
-import { Accordion, Button } from "react-bootstrap";
+import React from "react";
+import { Accordion } from "react-bootstrap";
 import { useFlightContext } from "../../context/FlightDataContext";
 import SegmentDetails from "./SegmentDetails";
+import { useRouter } from "next/router";
 
-const FlightInfoAccordion = () => {
+const FlightInfoAccordion = ({ isReturn, continueState, setContinueState }) => {
   const { selectedFlight, flightInfo } = useFlightContext();
-  const [continueState, setContinueState] = useState(false);
+  const router = useRouter();
 
   async function updateData(data) {
     const { total, mainGuest, childGuests, adultGuests } = data;
@@ -17,7 +18,13 @@ const FlightInfoAccordion = () => {
     localStorage.setItem("adult-guests", JSON.stringify(adultGuests));
 
     setContinueState(false);
+
+    router.push("/bagging");
   }
+
+  let firstSegment = selectedFlight?.Segments?.[0]?.[0];
+  let lastSegment =
+    selectedFlight?.Segments?.[0]?.[selectedFlight?.Segments?.[0]?.length - 1];
 
   return (
     <div className="seat_select-innr-ardian">
@@ -32,23 +39,27 @@ const FlightInfoAccordion = () => {
         </div>
         <div>
           <span>
-            {new Date(
-              selectedFlight?.Segments?.[0]?.[0]?.Origin?.DepTime
-            ).toLocaleDateString()}
+            {new Date(firstSegment?.Origin?.DepTime).toLocaleDateString()}
           </span>
           <p>
-            {selectedFlight?.Segments?.[0]?.[0]?.Origin?.Airport?.CityName} (
-            {selectedFlight?.Segments?.[0]?.[0]?.Origin?.Airport?.CityCode}) -{" "}
             {
-              selectedFlight?.Segments?.[0]?.[
-                selectedFlight?.Segments?.[0]?.length - 1
-              ]?.Destination?.Airport?.CityName
+              (isReturn ? firstSegment?.Origin : lastSegment?.Destination)
+                ?.Airport?.CityName
             }{" "}
             (
             {
-              selectedFlight?.Segments?.[0]?.[
-                selectedFlight?.Segments?.[0]?.length - 1
-              ]?.Destination?.Airport?.CityCode
+              (isReturn ? firstSegment?.Origin : lastSegment?.Destination)
+                ?.Airport?.CityCode
+            }
+            ) -{" "}
+            {
+              (!isReturn ? firstSegment?.Origin : lastSegment?.Destination)
+                ?.Airport?.CityName
+            }{" "}
+            (
+            {
+              (!isReturn ? firstSegment?.Origin : lastSegment?.Destination)
+                ?.Airport?.CityCode
             }
             )
           </p>
@@ -56,7 +67,10 @@ const FlightInfoAccordion = () => {
       </div>
 
       <Accordion defaultActiveKey="0">
-        {(selectedFlight?.Segments?.[0] || [])?.map((segment, idx) => (
+        {(isReturn
+          ? (selectedFlight?.Segments?.[0] || []).reverse()
+          : selectedFlight?.Segments?.[0] || []
+        )?.map((segment, idx) => (
           <SegmentDetails
             key={idx}
             continueState={continueState}
@@ -67,15 +81,10 @@ const FlightInfoAccordion = () => {
             ]?.RowSeats?.map((s) => s.Seats)?.flat()}
             segment={segment}
             flightInfo={flightInfo}
+            isReturn={isReturn}
           />
         ))}
       </Accordion>
-      <Button
-        onClick={() => setContinueState((pre) => !pre)}
-        className="btn10 right-0 mt-3"
-      >
-        Continue
-      </Button>
     </div>
   );
 };

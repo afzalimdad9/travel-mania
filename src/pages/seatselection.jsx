@@ -1,9 +1,13 @@
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 import FlightInfoAccordion from "../Components/FlightInfoAccordion";
 import Layout from "../layout/index";
+import { Button } from "react-bootstrap";
+import { useFlightContext } from "../context/FlightDataContext";
 
 const SeatSelection = () => {
+  const [continueState, setContinueState] = useState(false);
+  const { flightInfo } = useFlightContext();
   return (
     <>
       <Head>
@@ -19,7 +23,24 @@ const SeatSelection = () => {
             <div className="row">
               <div className="col-md-12">
                 <div className="seat_select-innr">
-                  <FlightInfoAccordion />
+                  <FlightInfoAccordion
+                    continueState={continueState}
+                    setContinueState={setContinueState}
+                  />
+                  {flightInfo?.tripType !== "one-way" && (
+                    <FlightInfoAccordion
+                      continueState={continueState}
+                      setContinueState={setContinueState}
+                      isReturn
+                    />
+                  )}
+
+                  <Button
+                    onClick={() => setContinueState((pre) => !pre)}
+                    className="btn10 right-0 mt-3"
+                  >
+                    Continue
+                  </Button>
                 </div>
               </div>
             </div>

@@ -7,6 +7,7 @@ import { getDifferenceInHoursAndMinutes, getLocalItem } from "../../utils";
 
 const SegmentDetails = ({
   segment,
+  isReturn,
   flightInfo,
   idx,
   SegmentSeats,
@@ -47,18 +48,19 @@ const SegmentDetails = ({
         total,
         mainGuest: {
           ...mainGuest,
-          seat: availableSeats[0],
+          [`seat${idx}`]: availableSeats[0],
         },
         adultGuests: Object.values(adultGuests)
           .map((k, _) => ({
             ...k,
-            seat: availableSeats[_ + 1],
+            [`seat${idx}`]: availableSeats[_ + 1],
           }))
           .reduce(handleReduce, {}),
         childGuests: Object.values(childGuests)
           .map((k, _) => ({
             ...k,
-            seat: availableSeats[_ + Object.values(adultGuests).length + 1],
+            [`seat${idx}`]:
+              availableSeats[_ + Object.values(adultGuests).length + 1],
           }))
           .reduce(handleReduce, {}),
       });
@@ -70,8 +72,15 @@ const SegmentDetails = ({
       <Accordion.Header>
         <div>
           <h6>
-            {segment?.Origin?.Airport?.CityCode} -{" "}
-            {segment?.Destination?.Airport?.CityCode}
+            {
+              (isReturn ? segment?.Destination : segment?.Origin)?.Airport
+                ?.CityCode
+            }{" "}
+            -{" "}
+            {
+              (!isReturn ? segment?.Destination : segment?.Origin)?.Airport
+                ?.CityCode
+            }
           </h6>
           <div>
             <span>Flight duration</span>
