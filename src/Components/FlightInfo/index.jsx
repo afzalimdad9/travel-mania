@@ -137,7 +137,7 @@ const FlightCard = (props) => {
           <hr />
           {tripType !== "one-way" && (
             <>
-              {(props?.Segments?.[0] || []).map((seg, idx) => (
+              {(props?.Segments?.[0] || []).reverse().map((seg, idx) => (
                 <Row className="align-items-center" key={idx}>
                   <Col>
                     <h5 className="mb-0">

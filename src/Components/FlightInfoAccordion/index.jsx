@@ -22,9 +22,13 @@ const FlightInfoAccordion = ({ isReturn, continueState, setContinueState }) => {
     router.push("/bagging");
   }
 
-  let firstSegment = selectedFlight?.Segments?.[0]?.[0];
-  let lastSegment =
-    selectedFlight?.Segments?.[0]?.[selectedFlight?.Segments?.[0]?.length - 1];
+  let segments =
+    (isReturn
+      ? selectedFlight?.Segments?.[0]?.reverse()
+      : selectedFlight?.Segments?.[0]) || [];
+
+  let firstSegment = segments?.[0];
+  let lastSegment = segments?.[segments?.length - 1];
 
   return (
     <div className="seat_select-innr-ardian">
@@ -43,39 +47,26 @@ const FlightInfoAccordion = ({ isReturn, continueState, setContinueState }) => {
           </span>
           <p>
             {
-              (isReturn ? firstSegment?.Origin : lastSegment?.Destination)
-                ?.Airport?.CityName
+              firstSegment?.[!isReturn ? "Origin" : "Destination"]?.Airport
+                ?.CityName
             }{" "}
-            (
+            ({isReturn ? flightInfo?.to : flightInfo?.from}) -
             {
-              (isReturn ? firstSegment?.Origin : lastSegment?.Destination)
-                ?.Airport?.CityCode
-            }
-            ) -{" "}
-            {
-              (!isReturn ? firstSegment?.Origin : lastSegment?.Destination)
-                ?.Airport?.CityName
+              lastSegment?.[isReturn ? "Origin" : "Destination"]?.Airport
+                ?.CityName
             }{" "}
-            (
-            {
-              (!isReturn ? firstSegment?.Origin : lastSegment?.Destination)
-                ?.Airport?.CityCode
-            }
-            )
+            ({!isReturn ? flightInfo?.to : flightInfo?.from})
           </p>
         </div>
       </div>
 
       <Accordion defaultActiveKey="0">
-        {(isReturn
-          ? (selectedFlight?.Segments?.[0] || []).reverse()
-          : selectedFlight?.Segments?.[0] || []
-        )?.map((segment, idx) => (
+        {segments?.map((segment, idx) => (
           <SegmentDetails
             key={idx}
             continueState={continueState}
             handleSeatsUpdate={updateData}
-            idx={idx}
+            idx={idx + (isReturn ? segments.length : 0)}
             SegmentSeats={selectedFlight?.SSR?.SeatDynamic?.[0]?.SegmentSeat?.[
               idx
             ]?.RowSeats?.map((s) => s.Seats)?.flat()}

@@ -15,8 +15,8 @@ const FlightBookingForm = () => {
     flightMode: "Economy",
     departureDate: null,
     returnDate: null,
-    departureTime: "11:00 AM",
-    returnTime: "11:00 AM",
+    departureTime: "00:00",
+    returnTime: "00:00",
     from: "",
     to: "",
     passengers: {
@@ -81,7 +81,9 @@ const FlightBookingForm = () => {
   const handleDateChange = (date, type) => {
     setFormData((prev) => ({
       ...prev,
-      [type]: date,
+      [type]:
+        new Date(date).toISOString()?.split("T")[0] +
+        `T${formData[type?.replace("Date", "Time")]}:00`,
     }));
   };
 
@@ -89,6 +91,10 @@ const FlightBookingForm = () => {
     setFormData((prev) => ({
       ...prev,
       [type]: time,
+      [type?.replace("Time", "Date")]:
+        new Date(formData[type?.replace("Time", "Date")])
+          .toISOString()
+          ?.split("T")[0] + `T${time}:00`,
     }));
   };
 
@@ -144,7 +150,7 @@ const FlightBookingForm = () => {
       const { tokenId } = authResponse;
 
       const searchPayload = {
-        EndUserIp: "192.168.11.120",
+        EndUserIp: "192.168.10.10",
         TokenId: tokenId,
         AdultCount: formData.passengers.adults,
         ChildCount: formData.passengers.children,

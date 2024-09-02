@@ -6,13 +6,28 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { getLocalItem } from "../utils";
+import { useFlightContext } from "../context/FlightDataContext";
+import getSymbolFromCurrency from "currency-symbol-map";
 
 const Bagging = () => {
-  const [noBanner, setNoBanner] = useState(true);
   const [show, setShow] = useState(false);
+  const { selectedFlight, flightInfo } = useFlightContext();
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = (e) => {
+    e.preventDefault();
+    setShow(true);
+  };
+
+  let mainGuest = getLocalItem("main-guest", {});
+  let childGuests = getLocalItem("children-guests", {});
+  let adultGuests = getLocalItem("adult-guests", {});
+
+  let segments = selectedFlight?.Segments?.[0] || [];
+  let oneWaySegments = segments;
+  let returnSegments = segments?.reverse();
+
   return (
     <>
       <Head>
@@ -30,41 +45,33 @@ const Bagging = () => {
             Carry more than your free baggage allowance by purchasing in advance
           </p>
           <h6>
-            Dubai (DBI) - London (LDN) <span>Thu, 30 May 2024</span>
+            {oneWaySegments?.[0]?.Origin?.Airport?.CityName} ({flightInfo?.from}
+            ) - {oneWaySegments?.[0]?.Destination?.Airport?.CityName} (
+            {flightInfo?.to}){" "}
+            <span>
+              {new Date(oneWaySegments?.[0]?.Origin?.DepTime).toLocaleString()}
+            </span>
           </h6>
-          <Table >
+          <Table>
             <thead>
-              <tr> 
+              <tr>
                 <th>Passengers</th>
                 <th>Additional Baggage weight in (Kg)</th>
                 <th>Price</th>
               </tr>
             </thead>
             <tbody>
-              <tr> 
+              <tr>
                 <td>David</td>
                 <td>
-                    <div className="qnty_bg">
-                        <input type="text" placeholder="Example: 10" />
-                        <button className="primary">ADD</button>
-                        <p>Please enter the multiples  of 5</p>
-                    </div>
+                  <div className="qnty_bg">
+                    <input type="text" placeholder="Example: 10" />
+                    <button className="primary">ADD</button>
+                    <p>Please enter the multiples of 5</p>
+                  </div>
                 </td>
                 <td className="text-center">-</td>
               </tr>
-
-              <tr> 
-                <td>David</td>
-                <td>
-                    <div className="qnty_bg">
-                        <input type="text" placeholder="Example: 10" />
-                        <button className="primary">ADD</button>
-                        <p>Please enter the multiples  of 5</p>
-                    </div>
-                </td>
-                <td className="text-center">-</td>
-              </tr>
-               
             </tbody>
           </Table>
         </Modal.Body>
@@ -72,66 +79,193 @@ const Bagging = () => {
           <Button onClick={handleClose}>Continue</Button>
         </Modal.Footer>
       </Modal>
-      <Layout noBanner={noBanner}>
+      <Layout noBanner>
         <section className="bagging-sec">
           <div className="container">
             <div className="row">
               <div className="col-12">
                 <div className="bagging-sec-inn">
                   <h6>
-                    David, Complete your journey with a wide range of world
-                    class services,
+                    {mainGuest?.firstName}, Complete your journey with a wide
+                    range of world class services,
                   </h6>
                   <h5>Seat Selection</h5>
 
                   <div className="bagging-sec-table">
-                    <div className="table-responsive"> 
-                    <Table>
-                      <thead>
-                        <tr>
-                          <th>Dubai (DBI) - London (LDN)</th>
-                          <th>DBI - LDN</th>
-                          <th>LDN - DBI</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>David</td>
-                          <td>19D 8666,0 PKR </td>
-                          <td>@No seat selected</td>
-                        </tr>
-                        <tr>
-                          <td>David</td>
-                          <td>19D 8666,0 PKR </td>
-                          <td>@No seat selected</td>
-                        </tr>
-                      </tbody>
-                    </Table></div>
-                    <hr />
+                    <div className="table-responsive">
+                      <Table>
+                        <thead>
+                          <tr>
+                            <th>
+                              {oneWaySegments?.[0]?.Origin?.Airport?.CityName} (
+                              {flightInfo?.from}) -{" "}
+                              {
+                                oneWaySegments?.[oneWaySegments?.length - 1]
+                                  ?.Destination?.Airport?.CityName
+                              }{" "}
+                              ({flightInfo?.to})
+                            </th>
+                            {oneWaySegments?.map((seg, idx) => (
+                              <th key={idx}>
+                                {seg?.Origin?.Airport?.CityCode} -{" "}
+                                {seg?.Destination?.Airport?.CityCode}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{mainGuest?.firstName}</td>
+                            {oneWaySegments?.map((_, idx) => (
+                              <td key={idx}>
+                                {mainGuest?.[`seat${idx}`]?.Code}{" "}
+                                {getSymbolFromCurrency(
+                                  mainGuest?.[`seat${idx}`]?.Currency
+                                )}
+                                {mainGuest?.[`seat${idx}`]?.Price}
+                              </td>
+                            ))}
+                          </tr>
 
-                    <div className="table-responsive"> 
-                    <Table>
-                      <thead>
-                        <tr>
-                          <th>Dubai (DBI) - London (LDN)</th>
-                          <th>DBI - LDN</th>
-                          <th>LDN - DBI</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>David</td>
-                          <td>19D 8666,0 PKR </td>
-                          <td>@No seat selected</td>
-                        </tr>
-                        <tr>
-                          <td>David</td>
-                          <td>19D 8666,0 PKR </td>
-                          <td>@No seat selected</td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
+                          {Object.values(adultGuests).map((guest, idx) => (
+                            <tr key={idx}>
+                              <td>{guest?.firstName}</td>
+                              {oneWaySegments?.map((_, idx) => (
+                                <td key={idx}>
+                                  {guest?.[`seat${idx}`]?.Code}{" "}
+                                  {getSymbolFromCurrency(
+                                    guest?.[`seat${idx}`]?.Currency
+                                  )}
+                                  {guest?.[`seat${idx}`]?.Price}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+
+                          {Object.values(childGuests).map((guest, idx) => (
+                            <tr key={idx}>
+                              <td>{guest?.firstName}</td>
+                              {oneWaySegments?.map((_, idx) => (
+                                <td key={idx}>
+                                  {guest?.[`seat${idx}`]?.Code}{" "}
+                                  {getSymbolFromCurrency(
+                                    guest?.[`seat${idx}`]?.Currency
+                                  )}
+                                  {guest?.[`seat${idx}`]?.Price}
+                                </td>
+                              ))}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+
+                    {flightInfo?.tripType !== "one-way" && (
+                      <>
+                        <hr />
+
+                        <div className="table-responsive">
+                          <Table>
+                            <thead>
+                              <tr>
+                                <th>
+                                  {
+                                    returnSegments?.[0]?.Destination?.Airport
+                                      ?.CityName
+                                  }{" "}
+                                  ({flightInfo?.to}) -{" "}
+                                  {
+                                    returnSegments?.[returnSegments.length - 1]
+                                      ?.Origin?.Airport?.CityName
+                                  }{" "}
+                                  ({flightInfo?.from})
+                                </th>
+                                {returnSegments?.map((seg, idx) => (
+                                  <th key={idx}>
+                                    {seg?.Destination?.Airport?.CityCode} -{" "}
+                                    {seg?.Origin?.Airport?.CityCode}
+                                  </th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>{mainGuest?.firstName}</td>
+                                {returnSegments?.map((_, idx) => (
+                                  <td key={idx}>
+                                    {
+                                      mainGuest?.[
+                                        `seat${idx + returnSegments.length}`
+                                      ]?.Code
+                                    }{" "}
+                                    {getSymbolFromCurrency(
+                                      mainGuest?.[
+                                        `seat${idx + returnSegments.length}`
+                                      ]?.Currency
+                                    )}
+                                    {
+                                      mainGuest?.[
+                                        `seat${idx + returnSegments.length}`
+                                      ]?.Price
+                                    }
+                                  </td>
+                                ))}
+                              </tr>
+
+                              {Object.values(adultGuests).map((guest, idx) => (
+                                <tr key={idx}>
+                                  <td>{guest?.firstName}</td>
+                                  {returnSegments?.map((_, idx) => (
+                                    <td key={idx}>
+                                      {
+                                        guest?.[
+                                          `seat${idx + returnSegments.length}`
+                                        ]?.Code
+                                      }{" "}
+                                      {getSymbolFromCurrency(
+                                        guest?.[
+                                          `seat${idx + returnSegments.length}`
+                                        ]?.Currency
+                                      )}
+                                      {
+                                        guest?.[
+                                          `seat${idx + returnSegments.length}`
+                                        ]?.Price
+                                      }
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+
+                              {Object.values(childGuests).map((guest, idx) => (
+                                <tr key={idx}>
+                                  <td>{guest?.firstName}</td>
+                                  {returnSegments?.map((_, idx) => (
+                                    <td key={idx}>
+                                      {
+                                        guest?.[
+                                          `seat${idx + returnSegments.length}`
+                                        ]?.Code
+                                      }{" "}
+                                      {getSymbolFromCurrency(
+                                        guest?.[
+                                          `seat${idx + returnSegments.length}`
+                                        ]?.Currency
+                                      )}
+                                      {
+                                        guest?.[
+                                          `seat${idx + returnSegments.length}`
+                                        ]?.Price
+                                      }
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </Table>
+                        </div>
+                      </>
+                    )}
                   </div>
 
                   <h5>Additional Baggage</h5>
