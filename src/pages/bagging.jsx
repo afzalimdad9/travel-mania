@@ -13,6 +13,9 @@ import getSymbolFromCurrency from "currency-symbol-map";
 const Bagging = () => {
   const [show, setShow] = useState(false);
   const { selectedFlight, flightInfo } = useFlightContext();
+  const [baggingInput, setBaggingInput] = useState(
+    getLocalItem("additional-baggages", {})
+  );
 
   const handleClose = () => setShow(false);
   const handleShow = (e) => {
@@ -24,9 +27,42 @@ const Bagging = () => {
   let childGuests = getLocalItem("children-guests", {});
   let adultGuests = getLocalItem("adult-guests", {});
 
-  let segments = selectedFlight?.Segments?.[0] || [];
-  let oneWaySegments = segments;
-  let returnSegments = segments?.reverse();
+  let hasReturn = selectedFlight?.Segments?.length > 0;
+  let oneWaySegments = selectedFlight?.Segments?.[0] || [];
+  let returnSegments =
+    (hasReturn
+      ? selectedFlight?.Segments?.[1]
+      : selectedFlight?.Segments?.[0]?.reverse()) || [];
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    const isMainGuest = name === "mainGuest";
+    const type = name.split("-")[0];
+    const uid = name.split("-")[1];
+    setBaggingInput((prev) => ({
+      ...prev,
+      [type]: isMainGuest
+        ? value
+        : {
+            ...prev[type],
+            [uid]: value,
+          },
+    }));
+
+    localStorage.setItem(
+      "additional-baggages",
+      JSON.stringify({
+        ...baggingInput,
+        [type]: isMainGuest
+          ? value
+          : {
+              ...baggingInput[type],
+              [uid]: value,
+            },
+      })
+    );
+  }
 
   return (
     <>
@@ -46,8 +82,12 @@ const Bagging = () => {
           </p>
           <h6>
             {oneWaySegments?.[0]?.Origin?.Airport?.CityName} ({flightInfo?.from}
-            ) - {oneWaySegments?.[0]?.Destination?.Airport?.CityName} (
-            {flightInfo?.to}){" "}
+            ) -{" "}
+            {
+              oneWaySegments?.[oneWaySegments?.length - 1]?.Destination?.Airport
+                ?.CityName
+            }{" "}
+            ({flightInfo?.to}){" "}
             <span>
               {new Date(oneWaySegments?.[0]?.Origin?.DepTime).toLocaleString()}
             </span>
@@ -62,16 +102,60 @@ const Bagging = () => {
             </thead>
             <tbody>
               <tr>
-                <td>David</td>
+                <td>{mainGuest?.firstName}</td>
                 <td>
                   <div className="qnty_bg">
-                    <input type="text" placeholder="Example: 10" />
+                    <input
+                      name="mainGuest"
+                      onChange={handleChange}
+                      value={baggingInput?.mainGuest}
+                      type="text"
+                      placeholder="Example: 10"
+                    />
                     <button className="primary">ADD</button>
                     <p>Please enter the multiples of 5</p>
                   </div>
                 </td>
                 <td className="text-center">-</td>
               </tr>
+              {Object.values(adultGuests).map((guest, idx) => (
+                <tr key={idx}>
+                  <td>{guest?.firstName}</td>
+                  <td>
+                    <div className="qnty_bg">
+                      <input
+                        name={`adultGuests-${idx}`}
+                        onChange={handleChange}
+                        value={baggingInput?.adultGuests?.[`${idx}`]}
+                        type="text"
+                        placeholder="Example: 10"
+                      />
+                      <button className="primary">ADD</button>
+                      <p>Please enter the multiples of 5</p>
+                    </div>
+                  </td>
+                  <td className="text-center">-</td>
+                </tr>
+              ))}
+              {Object.values(childGuests).map((guest, idx) => (
+                <tr key={idx}>
+                  <td>{guest?.firstName}</td>
+                  <td>
+                    <div className="qnty_bg">
+                      <input
+                        value={baggingInput?.childGuests?.[`${idx}`]}
+                        name={`childGuests-${idx}`}
+                        onChange={handleChange}
+                        type="text"
+                        placeholder="Example: 10"
+                      />
+                      <button className="primary">ADD</button>
+                      <p>Please enter the multiples of 5</p>
+                    </div>
+                  </td>
+                  <td className="text-center">-</td>
+                </tr>
+              ))}
             </tbody>
           </Table>
         </Modal.Body>
@@ -116,44 +200,54 @@ const Bagging = () => {
                         <tbody>
                           <tr>
                             <td>{mainGuest?.firstName}</td>
-                            {oneWaySegments?.map((_, idx) => (
-                              <td key={idx}>
-                                {mainGuest?.[`seat${idx}`]?.Code}{" "}
-                                {getSymbolFromCurrency(
-                                  mainGuest?.[`seat${idx}`]?.Currency
-                                )}
-                                {mainGuest?.[`seat${idx}`]?.Price}
-                              </td>
-                            ))}
+                            {oneWaySegments?.map((_, idx) => {
+                              const seat = mainGuest?.[`seat${idx}`];
+
+                              if (!seat)
+                                return <td key={idx}>No seat selected</td>;
+                              return (
+                                <td key={idx}>
+                                  {seat?.Code}{" "}
+                                  {getSymbolFromCurrency(seat?.Currency)}
+                                  {seat?.Price}
+                                </td>
+                              );
+                            })}
                           </tr>
 
                           {Object.values(adultGuests).map((guest, idx) => (
                             <tr key={idx}>
                               <td>{guest?.firstName}</td>
-                              {oneWaySegments?.map((_, idx) => (
-                                <td key={idx}>
-                                  {guest?.[`seat${idx}`]?.Code}{" "}
-                                  {getSymbolFromCurrency(
-                                    guest?.[`seat${idx}`]?.Currency
-                                  )}
-                                  {guest?.[`seat${idx}`]?.Price}
-                                </td>
-                              ))}
+                              {oneWaySegments?.map((_, idx) => {
+                                const seat = guest?.[`seat${idx}`];
+                                if (!seat)
+                                  return <td key={idx}>No seat selected</td>;
+                                return (
+                                  <td key={idx}>
+                                    {seat?.Code}{" "}
+                                    {getSymbolFromCurrency(seat?.Currency)}
+                                    {seat?.Price}
+                                  </td>
+                                );
+                              })}
                             </tr>
                           ))}
 
                           {Object.values(childGuests).map((guest, idx) => (
                             <tr key={idx}>
                               <td>{guest?.firstName}</td>
-                              {oneWaySegments?.map((_, idx) => (
-                                <td key={idx}>
-                                  {guest?.[`seat${idx}`]?.Code}{" "}
-                                  {getSymbolFromCurrency(
-                                    guest?.[`seat${idx}`]?.Currency
-                                  )}
-                                  {guest?.[`seat${idx}`]?.Price}
-                                </td>
-                              ))}
+                              {oneWaySegments?.map((_, idx) => {
+                                const seat = guest?.[`seat${idx}`];
+                                if (!seat)
+                                  return <td key={idx}>No seat selected</td>;
+                                return (
+                                  <td key={idx}>
+                                    {seat?.Code}{" "}
+                                    {getSymbolFromCurrency(seat?.Currency)}
+                                    {seat?.Price}
+                                  </td>
+                                );
+                              })}
                             </tr>
                           ))}
                         </tbody>
@@ -170,20 +264,29 @@ const Bagging = () => {
                               <tr>
                                 <th>
                                   {
-                                    returnSegments?.[0]?.Destination?.Airport
-                                      ?.CityName
+                                    oneWaySegments?.[oneWaySegments.length - 1]
+                                      ?.Destination?.Airport?.CityName
                                   }{" "}
                                   ({flightInfo?.to}) -{" "}
                                   {
-                                    returnSegments?.[returnSegments.length - 1]
-                                      ?.Origin?.Airport?.CityName
+                                    oneWaySegments?.[0]?.Origin?.Airport
+                                      ?.CityName
                                   }{" "}
                                   ({flightInfo?.from})
                                 </th>
                                 {returnSegments?.map((seg, idx) => (
                                   <th key={idx}>
-                                    {seg?.Destination?.Airport?.CityCode} -{" "}
-                                    {seg?.Origin?.Airport?.CityCode}
+                                    {
+                                      seg?.[
+                                        hasReturn ? "Origin" : "Destination"
+                                      ]?.Airport?.CityCode
+                                    }{" "}
+                                    -{" "}
+                                    {
+                                      seg?.[
+                                        !hasReturn ? "Origin" : "Destination"
+                                      ]?.Airport?.CityCode
+                                    }
                                   </th>
                                 ))}
                               </tr>
@@ -191,74 +294,70 @@ const Bagging = () => {
                             <tbody>
                               <tr>
                                 <td>{mainGuest?.firstName}</td>
-                                {returnSegments?.map((_, idx) => (
-                                  <td key={idx}>
-                                    {
-                                      mainGuest?.[
-                                        `seat${idx + returnSegments.length}`
-                                      ]?.Code
-                                    }{" "}
-                                    {getSymbolFromCurrency(
-                                      mainGuest?.[
-                                        `seat${idx + returnSegments.length}`
-                                      ]?.Currency
-                                    )}
-                                    {
-                                      mainGuest?.[
-                                        `seat${idx + returnSegments.length}`
-                                      ]?.Price
-                                    }
-                                  </td>
-                                ))}
+                                {returnSegments?.map((_, idx) => {
+                                  const seat =
+                                    mainGuest?.[
+                                      `seat${idx + oneWaySegments.length}`
+                                    ];
+
+                                  if (!seat)
+                                    return <td key={idx}>No seat selected</td>;
+
+                                  return (
+                                    <td key={idx}>
+                                      {seat?.Code}{" "}
+                                      {getSymbolFromCurrency(seat?.Currency)}
+                                      {seat?.Price}
+                                    </td>
+                                  );
+                                })}
                               </tr>
 
                               {Object.values(adultGuests).map((guest, idx) => (
                                 <tr key={idx}>
                                   <td>{guest?.firstName}</td>
-                                  {returnSegments?.map((_, idx) => (
-                                    <td key={idx}>
-                                      {
-                                        guest?.[
-                                          `seat${idx + returnSegments.length}`
-                                        ]?.Code
-                                      }{" "}
-                                      {getSymbolFromCurrency(
-                                        guest?.[
-                                          `seat${idx + returnSegments.length}`
-                                        ]?.Currency
-                                      )}
-                                      {
-                                        guest?.[
-                                          `seat${idx + returnSegments.length}`
-                                        ]?.Price
-                                      }
-                                    </td>
-                                  ))}
+                                  {returnSegments?.map((_, idx) => {
+                                    const seat =
+                                      guest?.[
+                                        `seat${idx + oneWaySegments.length}`
+                                      ];
+
+                                    if (!seat)
+                                      return (
+                                        <td key={idx}>No seat selected</td>
+                                      );
+                                    return (
+                                      <td key={idx}>
+                                        {seat?.Code}{" "}
+                                        {getSymbolFromCurrency(seat?.Currency)}
+                                        {seat?.Price}
+                                      </td>
+                                    );
+                                  })}
                                 </tr>
                               ))}
 
                               {Object.values(childGuests).map((guest, idx) => (
                                 <tr key={idx}>
                                   <td>{guest?.firstName}</td>
-                                  {returnSegments?.map((_, idx) => (
-                                    <td key={idx}>
-                                      {
-                                        guest?.[
-                                          `seat${idx + returnSegments.length}`
-                                        ]?.Code
-                                      }{" "}
-                                      {getSymbolFromCurrency(
-                                        guest?.[
-                                          `seat${idx + returnSegments.length}`
-                                        ]?.Currency
-                                      )}
-                                      {
-                                        guest?.[
-                                          `seat${idx + returnSegments.length}`
-                                        ]?.Price
-                                      }
-                                    </td>
-                                  ))}
+                                  {returnSegments?.map((_, idx) => {
+                                    const seat =
+                                      guest?.[
+                                        `seat${idx + oneWaySegments.length}`
+                                      ];
+
+                                    if (!seat)
+                                      return (
+                                        <td key={idx}>No seat selected</td>
+                                      );
+                                    return (
+                                      <td key={idx}>
+                                        {seat?.Code}{" "}
+                                        {getSymbolFromCurrency(seat?.Currency)}
+                                        {seat?.Price}
+                                      </td>
+                                    );
+                                  })}
                                 </tr>
                               ))}
                             </tbody>
@@ -291,7 +390,7 @@ const Bagging = () => {
                   </div>
 
                   <div className="btn-sub">
-                    <Link href={"/"} className="btn10">
+                    <Link href={"/tripsummary"} className="btn10">
                       Continue
                     </Link>
                   </div>

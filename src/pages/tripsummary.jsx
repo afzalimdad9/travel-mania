@@ -5,11 +5,9 @@ import Layout from "../layout/index";
 import Table from "react-bootstrap/Table";
 import { CiCircleCheck } from "react-icons/ci";
 import Link from "next/link";
-import Accordion from 'react-bootstrap/Accordion';
-
+import Accordion from "react-bootstrap/Accordion";
 
 const Tripsummary = () => {
-  const [noBanner, setNoBanner] = useState(true);
   return (
     <>
       <Head>
@@ -18,14 +16,14 @@ const Tripsummary = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout noBanner={noBanner}>
+      <Layout noBanner>
         <section className="trip-sum-sec">
           <div className="container">
             <div className="row">
               <div className="col-12">
-                <div className="trip-sum-inn"> 
+                <div className="trip-sum-inn">
                   <div className="trip-sum-arr-tbl">
-                  <h6>Trip Summary</h6>
+                    <h6>Trip Summary</h6>
                     <div className="trip-sum-arr-inn">
                       <div className="trip-sum-arr-inn-img">
                         <Image
@@ -40,40 +38,52 @@ const Tripsummary = () => {
                         </div>
                       </div>
                       <div className="table-responsive">
-                      <Table>
-                        <thead>
-                          <tr>
-                            <th>Departure</th>
-                            <th></th>
-                            <th>Arrival</th>
-                            <th>Class/ Baggage Allowance</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                                <h6><strong>10:25</strong> DBI</h6>
-                                <p>International airport in Dubai, United Arab Emirates</p>
-                            </td>
-                            <td className="text-center"> <CiCircleCheck /> <p>08 h 15 min</p> <p>1 stop</p></td>
-                            <td>
-                                <h6><strong>18:25</strong> LDN</h6>
-                                <p>London City Airport,
-                                Hartmann Rd, London E16 2PX, United Kingdom</p>
-                            </td>
-                            <td>
+                        <Table>
+                          <thead>
+                            <tr>
+                              <th>Departure</th>
+                              <th></th>
+                              <th>Arrival</th>
+                              <th>Class/ Baggage Allowance</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <h6>
+                                  <strong>10:25</strong> DBI
+                                </h6>
+                                <p>
+                                  International airport in Dubai, United Arab
+                                  Emirates
+                                </p>
+                              </td>
+                              <td className="text-center">
+                                {" "}
+                                <CiCircleCheck /> <p>08 h 15 min</p>{" "}
+                                <p>1 stop</p>
+                              </td>
+                              <td>
+                                <h6>
+                                  <strong>18:25</strong> LDN
+                                </h6>
+                                <p>
+                                  London City Airport, Hartmann Rd, London E16
+                                  2PX, United Kingdom
+                                </p>
+                              </td>
+                              <td>
                                 <p>Economy (Q)</p>
                                 <p>Adult: 30Kg</p>
-                            </td>
-                            <td>
-                                <Link href={'/'}>+ More</Link>
-                            </td>
-                          </tr>
-                           
-                        </tbody>
-                      </Table>
-                      </div> 
+                              </td>
+                              <td>
+                                <Link href={"/"}>+ More</Link>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
                     </div>
 
                     <div className="trip-sum-arr-inn">
@@ -90,237 +100,295 @@ const Tripsummary = () => {
                         </div>
                       </div>
                       <div className="table-responsive">
-                      <Table>
-                        <thead>
-                          <tr>
-                            <th>Departure</th>
-                            <th></th>
-                            <th>Arrival</th>
-                            <th>Class/ Baggage Allowance</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>
-                                <h6><strong>10:25</strong> DBI</h6>
-                                <p>International airport in Dubai, United Arab Emirates</p>
-                            </td>
-                            <td className="text-center"> <CiCircleCheck /> <p>08 h 15 min</p> <p>1 stop</p></td>
-                            <td>
-                                <h6><strong>18:25</strong> LDN</h6>
-                                <p>London City Airport,
-                                Hartmann Rd, London E16 2PX, United Kingdom</p>
-                            </td>
-                            <td>
+                        <Table>
+                          <thead>
+                            <tr>
+                              <th>Departure</th>
+                              <th></th>
+                              <th>Arrival</th>
+                              <th>Class/ Baggage Allowance</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <h6>
+                                  <strong>10:25</strong> DBI
+                                </h6>
+                                <p>
+                                  International airport in Dubai, United Arab
+                                  Emirates
+                                </p>
+                              </td>
+                              <td className="text-center">
+                                {" "}
+                                <CiCircleCheck /> <p>08 h 15 min</p>{" "}
+                                <p>1 stop</p>
+                              </td>
+                              <td>
+                                <h6>
+                                  <strong>18:25</strong> LDN
+                                </h6>
+                                <p>
+                                  London City Airport, Hartmann Rd, London E16
+                                  2PX, United Kingdom
+                                </p>
+                              </td>
+                              <td>
                                 <p>Economy (Q)</p>
                                 <p>Adult: 30Kg</p>
-                            </td>
-                            <td>
-                                <Link href={'/'}>+ More</Link>
-                            </td>
-                          </tr>
-                           
-                        </tbody>
-                      </Table></div>
-                    </div> 
+                              </td>
+                              <td>
+                                <Link href={"/"}>+ More</Link>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="trip-sum-arr-dtl">
                     <div className="trip-sum-arr-dtl">
-                        <h6>Passenger Details</h6>
-                        <div className="table-responsive"> <Table>
-                        <thead>
-                          <tr>
-                            <th>Passenger Name</th>
-                            <th>Passport</th>
-                            <th>Date of birth</th>
-                            <th>Type</th> 
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>David</td>
-                            <td>-</td>
-                            <td>5 Apri 1993</td>
-                            <td>Adult</td>
-                          </tr>
-                          <tr>
-                            <td>David</td>
-                            <td>-</td>
-                            <td>5 Apri 1993</td>
-                            <td>Adult</td>
-                          </tr>
-                           
-                        </tbody>
-                      </Table>
-                    </div>
+                      <h6>Passenger Details</h6>
+                      <div className="table-responsive">
+                        {" "}
+                        <Table>
+                          <thead>
+                            <tr>
+                              <th>Passenger Name</th>
+                              <th>Passport</th>
+                              <th>Date of birth</th>
+                              <th>Type</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>David</td>
+                              <td>-</td>
+                              <td>5 Apri 1993</td>
+                              <td>Adult</td>
+                            </tr>
+                            <tr>
+                              <td>David</td>
+                              <td>-</td>
+                              <td>5 Apri 1993</td>
+                              <td>Adult</td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
                     </div>
                     <div className="trip-sum-arr-dtl">
-                        <h6>Contact Details</h6>
-                        <div className="table-responsive">
+                      <h6>Contact Details</h6>
+                      <div className="table-responsive">
                         <Table>
-                        <thead>
-                          <tr>
-                            <th>Passenger Name</th>
-                            <th>Type</th>
-                            <th>Email</th>
-                            <th>Number</th> 
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>David</td>
-                            <td>Primary Passenger</td>
-                            <td>example@gmail.com</td>
-                            <td>08-87356632</td>
-                          </tr>
-                            
-                           
-                        </tbody>
-                      </Table>
-                    </div>
+                          <thead>
+                            <tr>
+                              <th>Passenger Name</th>
+                              <th>Type</th>
+                              <th>Email</th>
+                              <th>Number</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>David</td>
+                              <td>Primary Passenger</td>
+                              <td>example@gmail.com</td>
+                              <td>08-87356632</td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
                     </div>
 
                     <div className="trip-sum-arr-dtl">
-                        <h5>Seats</h5>
-                        <h6>Dubai - London</h6>
-                        <div className="table-responsive">
+                      <h5>Seats</h5>
+                      <h6>Dubai - London</h6>
+                      <div className="table-responsive">
                         <Table>
-                        <thead>
-                          <tr>
-                            <th>Passenger</th>
-                            <th>DBI - LDN</th>
-                            <th>LDN - DBI</th> 
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>David</td>
-                            <td>19D 8666,0 PKR </td>
-                            <td>No seat selected</td> 
-                          </tr> 
-                           
-                        </tbody>
-                         </Table></div>
+                          <thead>
+                            <tr>
+                              <th>Passenger</th>
+                              <th>DBI - LDN</th>
+                              <th>LDN - DBI</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>David</td>
+                              <td>19D 8666,0 PKR </td>
+                              <td>No seat selected</td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
                     </div>
 
-                    <div className="trip-sum-arr-dtl"> 
-                        <h6>London - Dubai</h6>
-                        <div className="table-responsive">
+                    <div className="trip-sum-arr-dtl">
+                      <h6>London - Dubai</h6>
+                      <div className="table-responsive">
                         <Table>
-                        <thead>
-                          <tr>
-                            <th>Passenger</th>
-                            <th>DBI - LDN</th>
-                            <th>LDN - DBI</th> 
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>David</td>
-                            <td>19D 8666,0 PKR </td>
-                            <td>No seat selected</td> 
-                          </tr> 
-                           
-                        </tbody>
-                      </Table>
+                          <thead>
+                            <tr>
+                              <th>Passenger</th>
+                              <th>DBI - LDN</th>
+                              <th>LDN - DBI</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>David</td>
+                              <td>19D 8666,0 PKR </td>
+                              <td>No seat selected</td>
+                            </tr>
+                          </tbody>
+                        </Table>
+                      </div>
                     </div>
-                    </div>
-
                   </div>
 
-                <Accordion defaultActiveKey="0">
-                        <Accordion.Item eventKey="0">
-                            <Accordion.Header>Purchase Conditions</Accordion.Header>
-                            <Accordion.Body>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                            culpa qui officia deserunt mollit anim id est laborum.
-                            </Accordion.Body>
-                        </Accordion.Item>
-                        <Accordion.Item eventKey="1">
-                            <Accordion.Header>Refund  Fare Rules</Accordion.Header>
-                            <Accordion.Body>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                            aliquip ex ea commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                            culpa qui officia deserunt mollit anim id est laborum.
-                            </Accordion.Body>
-                        </Accordion.Item>
-                    </Accordion> 
+                  <Accordion defaultActiveKey="0">
+                    <Accordion.Item eventKey="0">
+                      <Accordion.Header>Purchase Conditions</Accordion.Header>
+                      <Accordion.Body>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      </Accordion.Body>
+                    </Accordion.Item>
+                    <Accordion.Item eventKey="1">
+                      <Accordion.Header>Refund Fare Rules</Accordion.Header>
+                      <Accordion.Body>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                        sed do eiusmod tempor incididunt ut labore et dolore
+                        magna aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip ex ea
+                        commodo consequat. Duis aute irure dolor in
+                        reprehenderit in voluptate velit esse cillum dolore eu
+                        fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                        non proident, sunt in culpa qui officia deserunt mollit
+                        anim id est laborum.
+                      </Accordion.Body>
+                    </Accordion.Item>
+                  </Accordion>
                 </div>
               </div>
             </div>
             <div className="row">
-                <div className="col-md-6">
-                    <div className="readeem-covh">
-                        <h6>Redeem Voucher</h6>
-                        <p>Apply one voucher per person <Link href={'/'}>Help</Link></p>
-                        <form action="">
-                            <div className="row">
-                                <div className="col-md-6">
-                                    <div className="field">
-                                        <select >
-                                            <option value="David">David</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="field">
-                                         <input type="text" placeholder="235-4342176353" />
-                                         <span>+</span>
-                                    </div>
-                                </div>
-                                <div className="col-md-12">
-                                        <ul>
-                                            <li><button type="submit" className="btn10">Add and other voucher</button></li>
-                                            <li><button type="submit" className="btn10">Submit Voucher</button></li>
-                                        </ul>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div className="col-md-6">
-                    <div className="ttl-price-dv">
-                        <h6>Total Price</h6>
+              <div className="col-md-6">
+                <div className="readeem-covh">
+                  <h6>Redeem Voucher</h6>
+                  <p>
+                    Apply one voucher per person <Link href={"/"}>Help</Link>
+                  </p>
+                  <form action="">
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="field">
+                          <select>
+                            <option value="David">David</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="field">
+                          <input type="text" placeholder="235-4342176353" />
+                          <span>+</span>
+                        </div>
+                      </div>
+                      <div className="col-md-12">
                         <ul>
-                            <li><p> <strong> Trip price</strong> <span>(2 adults)</span></p> <h6>PKR 40580.00</h6></li>
-                            <li><p>Preferred seats for all passengers</p> <h6>PKR 40580.00</h6></li>
-                            <li><h5>Payable amount <span>PKR 57680.00</span></h5></li>
+                          <li>
+                            <button type="submit" className="btn10">
+                              Add and other voucher
+                            </button>
+                          </li>
+                          <li>
+                            <button type="submit" className="btn10">
+                              Submit Voucher
+                            </button>
+                          </li>
                         </ul>
+                      </div>
                     </div>
+                  </form>
                 </div>
+              </div>
+              <div className="col-md-6">
+                <div className="ttl-price-dv">
+                  <h6>Total Price</h6>
+                  <ul>
+                    <li>
+                      <p>
+                        {" "}
+                        <strong> Trip price</strong> <span>(2 adults)</span>
+                      </p>{" "}
+                      <h6>PKR 40580.00</h6>
+                    </li>
+                    <li>
+                      <p>Preferred seats for all passengers</p>{" "}
+                      <h6>PKR 40580.00</h6>
+                    </li>
+                    <li>
+                      <h5>
+                        Payable amount <span>PKR 57680.00</span>
+                      </h5>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
             <div className="row">
-                <div className="col-md-6">
-                    <div className="pay-selct-dv">
-                        <h6>Choose how to pag</h6>
-                        <ul className="radio-ul">
-                            <li><input type="radio" id="card1" name="paynow" /> <label htmlFor="card1">paynow</label></li>
-                            <li><input type="radio" id="card2" name="paynow" /> <label htmlFor="card2">Cash + Avios</label></li>
-                             
-                        </ul>
-                        <div className="chk-bx">
-                            <input type="checkbox" /><Link href={'/'}></Link>
-                             <p>I have read and accept the <Link href={'/'}>terms and conditions</Link> ,<Link href={'/'}>fare and refund rules</Link>  stated above, and <Link href={'/'}>general conditions of carriage</Link>  applicable to my flight. </p>
-                        </div>
+              <div className="col-md-6">
+                <div className="pay-selct-dv">
+                  <h6>Choose how to pag</h6>
+                  <ul className="radio-ul">
+                    <li>
+                      <input type="radio" id="card1" name="paynow" />{" "}
+                      <label htmlFor="card1">paynow</label>
+                    </li>
+                    <li>
+                      <input type="radio" id="card2" name="paynow" />{" "}
+                      <label htmlFor="card2">Cash + Avios</label>
+                    </li>
+                  </ul>
+                  <div className="chk-bx">
+                    <input type="checkbox" />
+                    <Link href={"/"}></Link>
+                    <p>
+                      I have read and accept the{" "}
+                      <Link href={"/"}>terms and conditions</Link> ,
+                      <Link href={"/"}>fare and refund rules</Link> stated
+                      above, and{" "}
+                      <Link href={"/"}>general conditions of carriage</Link>{" "}
+                      applicable to my flight.{" "}
+                    </p>
+                  </div>
 
-                        <ul className="btn-sub-ul"> 
-                            <li><button type="submit" className="btn10">Back</button></li>
-                            <li><button type="submit" className="btn10">Purchase</button></li>
-                        </ul>
-                    </div>
+                  <ul className="btn-sub-ul">
+                    <li>
+                      <button type="submit" className="btn10">
+                        Back
+                      </button>
+                    </li>
+                    <li>
+                      <button type="submit" className="btn10">
+                        Purchase
+                      </button>
+                    </li>
+                  </ul>
                 </div>
+              </div>
             </div>
           </div>
         </section>

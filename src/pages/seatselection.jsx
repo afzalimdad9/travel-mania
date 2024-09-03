@@ -28,11 +28,14 @@ const SeatSelection = () => {
                     setContinueState={setContinueState}
                   />
                   {flightInfo?.tripType !== "one-way" && (
-                    <FlightInfoAccordion
-                      continueState={continueState}
-                      setContinueState={setContinueState}
-                      isReturn
-                    />
+                    <>
+                      <hr />
+                      <FlightInfoAccordion
+                        continueState={continueState}
+                        setContinueState={setContinueState}
+                        isReturn
+                      />
+                    </>
                   )}
 
                   <Button

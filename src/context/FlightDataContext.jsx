@@ -62,7 +62,7 @@ export default function FlightContextProvider({ children: child }) {
         DirectFlight: "false",
         OneStopFlight: "false",
         PreferredAirlines: null,
-        BookingMode: tripType === "round-trip" ? 2 : 1,
+        BookingMode: 5,
         Segments: [
           {
             Origin: from,

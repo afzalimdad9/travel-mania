@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { IoMdCheckmark } from "react-icons/io";
 import getSymbolFromCurrency from "currency-symbol-map";
@@ -13,59 +13,158 @@ const SegmentDetails = ({
   SegmentSeats,
   handleSeatsUpdate,
   continueState,
+  hasReturn,
 }) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
   let availableSeats = SegmentSeats?.filter((s) => s.AvailablityType === 1).map(
     (d) => ({ ...d, isBusiness: Number(d.RowNo) < 16 })
   );
-  let mainGuest = getLocalItem("main-guest", {});
-  let childGuests = getLocalItem("children-guests", {});
-  let adultGuests = getLocalItem("adult-guests", {});
+  let [mainGuest, setMainGuest] = useState(getLocalItem("main-guest", {}));
+  let [childGuests, setChildGuests] = useState(
+    getLocalItem("children-guests", {})
+  );
+  let [adultGuests, setAdultGuests] = useState(
+    getLocalItem("adult-guests", {})
+  );
 
-  let subtotal = Object.values(childGuests).reduce((acc, _, idx) => {
-    acc += availableSeats[Object.values(adultGuests).length + 1 + idx].Price;
-    return acc;
-  }, availableSeats[0]?.Price);
+  let subtotal = useMemo(() => {
+    return Object.values(childGuests).reduce((acc, cur, idx) => {
+      const price = cur?.[`seat${idx}`]?.Price || 0;
+      acc += price;
+      return acc;
+    }, mainGuest?.[`seat${idx}`]?.Price || 0);
+  }, [mainGuest, childGuests, idx]);
 
-  let total = Object.values(adultGuests).reduce((acc, _, idx) => {
-    acc += availableSeats[1 + idx].Price;
-    return acc;
-  }, subtotal);
+  let total = useMemo(
+    () =>
+      Object.values(adultGuests).reduce((acc, cur, idx) => {
+        const price = cur?.[`seat${idx}`]?.Price || 0;
+        acc += price;
+        return acc;
+      }, subtotal),
+    [subtotal, adultGuests]
+  );
 
   const groupedRows = Object.groupBy(SegmentSeats, ({ RowNo }) => RowNo);
 
-  useEffect(() => {
-    function handleReduce(acc, cur, id) {
-      if (!acc[id]) {
-        acc[id] = {};
-      }
-
-      acc[id] = cur;
-
-      return acc;
+  function handleReduce(acc, cur, id) {
+    if (!acc[id]) {
+      acc[id] = {};
     }
+
+    acc[id] = cur;
+
+    return acc;
+  }
+
+  const isBusiness = flightInfo?.flightMode !== "Economy";
+
+  useEffect(() => {
     if (continueState) {
       handleSeatsUpdate({
         total,
-        mainGuest: {
-          ...mainGuest,
-          [`seat${idx}`]: availableSeats[0],
-        },
-        adultGuests: Object.values(adultGuests)
+        mainGuest,
+        adultGuests,
+        childGuests,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [continueState]);
+
+  useEffect(() => {
+    if (
+      (mainGuest && !mainGuest?.[`seat${idx}`]) ||
+      Object.values(adultGuests).some((k) => !k?.[`seat${idx}`]) ||
+      Object.values(childGuests).some((k) => !k?.[`seat${idx}`])
+    ) {
+      let availableOnlySeats = availableSeats?.filter(
+        (s) => s?.isBusiness === isBusiness
+      );
+
+      setMainGuest((prev) => ({
+        ...prev,
+        [`seat${idx}`]: availableOnlySeats[0],
+      }));
+
+      setAdultGuests(
+        Object.values(adultGuests)
           .map((k, _) => ({
             ...k,
-            [`seat${idx}`]: availableSeats[_ + 1],
+            [`seat${idx}`]: availableOnlySeats[_ + 1],
           }))
-          .reduce(handleReduce, {}),
-        childGuests: Object.values(childGuests)
+          .reduce(handleReduce, {})
+      );
+
+      setChildGuests(
+        Object.values(childGuests)
           .map((k, _) => ({
             ...k,
             [`seat${idx}`]:
-              availableSeats[_ + Object.values(adultGuests).length + 1],
+              availableOnlySeats[_ + Object.values(adultGuests).length + 1],
           }))
-          .reduce(handleReduce, {}),
-      });
+          .reduce(handleReduce, {})
+      );
     }
-  }, [continueState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mainGuest, adultGuests, childGuests]);
+
+  function selectSeat(seat) {
+    if (isSeatTaken(seat?.Code) || seat.AvailablityType === 2) {
+      return;
+    }
+
+    const isMainGuest = selectedIndex === 0;
+    const isChild = selectedIndex >= Object.values(adultGuests).length + 1;
+
+    if (isMainGuest) {
+      setMainGuest((prev) => ({
+        ...prev,
+        [`seat${idx}`]: seat,
+      }));
+    } else if (isChild) {
+      setChildGuests(
+        Object.values(childGuests)
+          .map((k, _) => ({
+            ...k,
+            [`seat${idx}`]:
+              selectedIndex === _ + (Object.values(adultGuests).length + 1)
+                ? seat
+                : k[`seat${idx}`],
+          }))
+          .reduce(handleReduce, {})
+      );
+    } else {
+      setAdultGuests(
+        Object.values(adultGuests)
+          .map((k, _) => ({
+            ...k,
+            [`seat${idx}`]:
+              selectedIndex === _ + (Object.values(adultGuests).length + 1)
+                ? seat
+                : k[`seat${idx}`],
+          }))
+          .reduce(handleReduce, {})
+      );
+    }
+  }
+
+  function isSeatTaken(code) {
+    const mainGuestHas = mainGuest?.[`seat${idx}`]?.Code === code;
+    const adultGuestHas = Object.values(adultGuests).some(
+      (k) => k?.[`seat${idx}`]?.Code === code
+    );
+    const childGuestHas = Object.values(childGuests).some(
+      (k) => k?.[`seat${idx}`]?.Code === code
+    );
+    return mainGuestHas || childGuestHas || adultGuestHas;
+  }
+
+  const windowSeat = availableSeats?.filter(
+    (s) => s.SeatType === 1 && s.isBusiness === isBusiness
+  )[0];
+  const aisleSeat = availableSeats
+    ?.filter((s) => s.SeatType === 2 && s.isBusiness === isBusiness)
+    ?.sort((a, b) => b?.Price - a?.Price)[0];
 
   return (
     <Accordion.Item eventKey={idx}>
@@ -73,13 +172,13 @@ const SegmentDetails = ({
         <div>
           <h6>
             {
-              (isReturn ? segment?.Destination : segment?.Origin)?.Airport
-                ?.CityCode
+              (isReturn && !hasReturn ? segment?.Destination : segment?.Origin)
+                ?.Airport?.CityCode
             }{" "}
             -{" "}
             {
-              (!isReturn ? segment?.Destination : segment?.Origin)?.Airport
-                ?.CityCode
+              (isReturn && !hasReturn ? segment?.Origin : segment?.Destination)
+                ?.Airport?.CityCode
             }
           </h6>
           <div>
@@ -107,18 +206,35 @@ const SegmentDetails = ({
         <div className="flight_acordian-inn">
           <div className="flight_acordian-lft">
             <ul className="seat-ul-num">
-              <li>
-                <div className="seat-numb">{availableSeats[0]?.Code}</div>
+              <li
+                style={{
+                  cursor: "pointer",
+                  background: selectedIndex === 0 ? "green" : "transparent",
+                  padding: "10px 5px",
+                  borderRadius: "12px",
+                }}
+                onClick={() => setSelectedIndex(0)}
+              >
+                <div className="seat-numb">
+                  {mainGuest?.[`seat${idx}`]?.Code}
+                </div>
                 <div>
                   <h6>{mainGuest?.firstName}</h6>
                   <ul>
-                    <li>
+                    <li
+                      style={{
+                        opacity: selectedIndex === 0 ? 1 : 0,
+                        cursor: selectedIndex === 0 ? "text" : "default",
+                      }}
+                    >
                       <IoMdCheckmark /> <span>Selected</span>
                     </li>
                     <li>
                       <span>
-                        {getSymbolFromCurrency(availableSeats[0]?.Currency)}
-                        {availableSeats[0]?.Price}
+                        {getSymbolFromCurrency(
+                          mainGuest?.[`seat${idx}`]?.Currency
+                        )}
+                        {mainGuest?.[`seat${idx}`]?.Price}
                       </span>
                     </li>
                   </ul>
@@ -126,22 +242,33 @@ const SegmentDetails = ({
               </li>
 
               {Object.values(adultGuests).map((k, id) => (
-                <li key={id}>
-                  <div className="seat-numb">
-                    {availableSeats[id + 1]?.Code}
-                  </div>
+                <li
+                  key={id}
+                  style={{
+                    cursor: "pointer",
+                    background:
+                      selectedIndex === id + 1 ? "green" : "transparent",
+                    padding: "10px 5px",
+                    borderRadius: "12px",
+                  }}
+                  onClick={() => setSelectedIndex(id + 1)}
+                >
+                  <div className="seat-numb">{k?.[`seat${idx}`]?.Code}</div>
                   <div>
                     <h6>{k?.firstName}</h6>
                     <ul>
-                      <li>
+                      <li
+                        style={{
+                          opacity: selectedIndex === id + 1 ? 1 : 0,
+                          cursor: selectedIndex === id + 1 ? "text" : "default",
+                        }}
+                      >
                         <IoMdCheckmark /> <span>Selected</span>
                       </li>
                       <li>
                         <span>
-                          {getSymbolFromCurrency(
-                            availableSeats[id + 1]?.Currency
-                          )}
-                          {availableSeats[id + 1]?.Price}
+                          {getSymbolFromCurrency(k?.[`seat${idx}`]?.Currency)}
+                          {k?.[`seat${idx}`]?.Price}
                         </span>
                       </li>
                     </ul>
@@ -150,31 +277,46 @@ const SegmentDetails = ({
               ))}
 
               {Object.values(childGuests).map((k, id) => (
-                <li key={id}>
-                  <div className="seat-numb">
-                    {
-                      availableSeats[Object.values(adultGuests).length + 1 + id]
-                        ?.Code
-                    }
-                  </div>
+                <li
+                  key={id}
+                  style={{
+                    cursor: "pointer",
+                    background:
+                      selectedIndex ===
+                      Object.values(adultGuests).length + 1 + id
+                        ? "green"
+                        : "transparent",
+                    padding: "10px 5px",
+                    borderRadius: "12px",
+                  }}
+                  onClick={() =>
+                    setSelectedIndex(Object.values(adultGuests).length + 1 + id)
+                  }
+                >
+                  <div className="seat-numb">{k?.[`seat${idx}`]?.Code}</div>
                   <div>
                     <h6>{k?.firstName}</h6>
                     <ul>
-                      <li>
+                      <li
+                        style={{
+                          opacity:
+                            selectedIndex ===
+                            Object.values(adultGuests).length + 1 + id
+                              ? 1
+                              : 0,
+                          cursor:
+                            selectedIndex ===
+                            Object.values(adultGuests).length + 1 + id
+                              ? "text"
+                              : "default",
+                        }}
+                      >
                         <IoMdCheckmark /> <span>Selected</span>
                       </li>
                       <li>
                         <span>
-                          {getSymbolFromCurrency(
-                            availableSeats[
-                              Object.values(adultGuests).length + 1 + id
-                            ]?.Currency
-                          )}
-                          {
-                            availableSeats[
-                              Object.values(adultGuests).length + 1 + id
-                            ]?.Price
-                          }
+                          {getSymbolFromCurrency(k?.[`seat${idx}`]?.Currency)}
+                          {k?.[`seat${idx}`]?.Price}
                         </span>
                       </li>
                     </ul>
@@ -207,7 +349,10 @@ const SegmentDetails = ({
                 </div>
                 <div>
                   <p>Extra legroom</p>
-                  <span>18452.0 PKR</span>
+                  <span>
+                    {getSymbolFromCurrency(windowSeat?.Currency)}
+                    {windowSeat?.Price}
+                  </span>
                 </div>
               </li>
               <li>
@@ -221,7 +366,10 @@ const SegmentDetails = ({
                 </div>
                 <div>
                   <p>Extra Preferred</p>
-                  <span>18452.0 PKR</span>
+                  <span>
+                    {getSymbolFromCurrency(aisleSeat?.Currency)}
+                    {aisleSeat?.Price}
+                  </span>
                 </div>
               </li>
               <li>
@@ -255,12 +403,9 @@ const SegmentDetails = ({
             <div className="seat-center-mn">
               <ul className="seat-numbers">
                 {Object.keys(groupedRows)
-                  .slice(
-                    flightInfo?.flightMode === "Economy" ? 16 : 1,
-                    flightInfo?.flightMode === "Economy" ? 30 : 16
-                  )
-                  .map((_) => (
-                    <li key={_}>
+                  .slice(!isBusiness ? 16 : 1, !isBusiness ? 30 : 16)
+                  .map((_, id) => (
+                    <li key={id}>
                       <p>{_}</p>
                     </li>
                   ))}
@@ -268,12 +413,9 @@ const SegmentDetails = ({
               <div>
                 <ul className="seat-alpha">
                   {Object.values(groupedRows)
-                    .slice(
-                      flightInfo?.flightMode === "Economy" ? 16 : 1,
-                      flightInfo?.flightMode === "Economy" ? 30 : 16
-                    )[0]
-                    .map((_) => (
-                      <li key={_}>
+                    .slice(!isBusiness ? 16 : 1, !isBusiness ? 30 : 16)[0]
+                    .map((_, id) => (
+                      <li key={id}>
                         <p>{_.SeatNo}</p>
                       </li>
                     ))}
@@ -285,32 +427,36 @@ const SegmentDetails = ({
                     gridTemplateRows: `repeat(15, 1fr)`,
                     gridTemplateColumns: `repeat(${
                       Object.values(groupedRows).slice(
-                        flightInfo?.flightMode === "Economy" ? 16 : 1,
-                        flightInfo?.flightMode === "Economy" ? 30 : 16
+                        !isBusiness ? 16 : 1,
+                        !isBusiness ? 30 : 16
                       )[0].length
                     }, 1fr)`,
                   }}
                 >
                   {Object.values(groupedRows)
-                    .slice(
-                      flightInfo?.flightMode === "Economy" ? 16 : 1,
-                      flightInfo?.flightMode === "Economy" ? 30 : 16
-                    )
+                    .slice(!isBusiness ? 16 : 1, !isBusiness ? 30 : 16)
                     .flat()
                     .map((v, idx) => {
                       return (
                         <li key={idx}>
                           <Image
                             src={
-                              v.AvailablityType === 0
-                                ? "/images/seat-2.png"
-                                : v.AvailablityType === 1
-                                ? "/images/seat-1.png"
-                                : v.AvailablityType === 4
-                                ? "/images/seat-3.png"
+                              !isSeatTaken(v?.Code) && v.AvailablityType !== 2
+                                ? v.AvailablityType === 0
+                                  ? "/images/seat-2.png"
+                                  : v.AvailablityType === 1
+                                  ? "/images/seat-1.png"
+                                  : "/images/seat-3.png"
                                 : "/images/seat-4.png"
                             }
+                            onClick={() => selectSeat(v)}
                             width={40}
+                            style={{
+                              cursor:
+                                isSeatTaken(v?.Code) || v.AvailablityType === 2
+                                  ? "not-allowed"
+                                  : "pointer",
+                            }}
                             height={40}
                             alt="img"
                           />

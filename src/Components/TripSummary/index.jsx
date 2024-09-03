@@ -6,6 +6,12 @@ import getSymbolFromCurrency from "currency-symbol-map";
 
 const TripSummary = () => {
   const { selectedFlight, flightInfo } = useFlightContext();
+
+  let hasReturn = (selectedFlight?.Segments || []).length > 0;
+  let returnSegment = hasReturn
+    ? selectedFlight?.Segments?.[1] || []
+    : selectedFlight?.Segments?.[0] || [];
+
   return (
     <div className="passn-dtl-sidbar">
       <h6>Your trip summary</h6>
@@ -62,58 +68,78 @@ const TripSummary = () => {
         <div className="trip-sum-dtl">
           <h6>Outbound flight</h6>
 
-          {(selectedFlight?.Segments?.[0] || [])
-            .reverse()
-            .map((segment, idx) => (
-              <div key={idx} className="flex-div">
-                <div className="trip-dv-1">
-                  <span>
-                    {new Date(
-                      segment?.Destination?.DepTime
-                    ).toLocaleDateString()}
-                  </span>
-                  <p>
-                    {new Date(
-                      segment?.Destination?.DepTime
-                    ).toLocaleTimeString()}
-                  </p>
-                  <p>{segment?.Destination?.Airport?.CityCode}</p>
-                </div>
-                <div className="trip-sum-img">
-                  <p>
-                    {
-                      getDifferenceInHoursAndMinutes(
-                        segment?.Origin?.DepTime,
-                        segment?.Destination?.ArrTime
-                      ).hours
-                    }
-                    :
-                    {
-                      getDifferenceInHoursAndMinutes(
-                        segment?.Origin?.DepTime,
-                        segment?.Destination?.ArrTime
-                      ).minutes
-                    }
-                  </p>
-                  <Image
-                    width={160}
-                    height={13}
-                    src="/images/trip-sum-img.png"
-                    alt="img"
-                  />
-                </div>
-
-                <div className="trip-dv-1">
-                  <span>
-                    {new Date(segment?.Origin?.ArrTime).toLocaleDateString()}
-                  </span>
-                  <p>
-                    {new Date(segment?.Origin?.ArrTime).toLocaleTimeString()}
-                  </p>
-                  <p>{segment?.Origin?.Airport?.CityCode}</p>
-                </div>
+          {returnSegment.map((segment, idx) => (
+            <div key={idx} className="flex-div">
+              <div className="trip-dv-1">
+                <span>
+                  {new Date(
+                    segment?.[!hasReturn ? "Destination" : "Origin"]?.[
+                      !hasReturn ? "ArrTime" : "DepTime"
+                    ]
+                  ).toLocaleDateString()}
+                </span>
+                <p>
+                  {new Date(
+                    segment?.[!hasReturn ? "Destination" : "Origin"]?.[
+                      !hasReturn ? "ArrTime" : "DepTime"
+                    ]
+                  ).toLocaleTimeString()}
+                </p>
+                <p>
+                  {
+                    segment?.[!hasReturn ? "Destination" : "Origin"]?.Airport
+                      ?.CityCode
+                  }
+                </p>
               </div>
-            ))}
+              <div className="trip-sum-img">
+                <p>
+                  {
+                    getDifferenceInHoursAndMinutes(
+                      segment?.Origin?.DepTime,
+                      segment?.Destination?.ArrTime
+                    ).hours
+                  }
+                  :
+                  {
+                    getDifferenceInHoursAndMinutes(
+                      segment?.Origin?.DepTime,
+                      segment?.Destination?.ArrTime
+                    ).minutes
+                  }
+                </p>
+                <Image
+                  width={160}
+                  height={13}
+                  src="/images/trip-sum-img.png"
+                  alt="img"
+                />
+              </div>
+
+              <div className="trip-dv-1">
+                <span>
+                  {new Date(
+                    segment?.[hasReturn ? "Destination" : "Origin"]?.[
+                      hasReturn ? "ArrTime" : "DepTime"
+                    ]
+                  ).toLocaleDateString()}
+                </span>
+                <p>
+                  {new Date(
+                    segment?.[hasReturn ? "Destination" : "Origin"]?.[
+                      hasReturn ? "ArrTime" : "DepTime"
+                    ]
+                  ).toLocaleTimeString()}
+                </p>
+                <p>
+                  {
+                    segment?.[hasReturn ? "Destination" : "Origin"]?.Airport
+                      ?.CityCode
+                  }
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
@@ -121,10 +147,12 @@ const TripSummary = () => {
         <h6>
           <span className="prc-ttl">Total trip price:</span>{" "}
           <span className="prc">
-            {getSymbolFromCurrency(flightInfo?.Fair?.Currency)}
+            {getSymbolFromCurrency(selectedFlight?.Fare?.Currency)}
             {flightInfo?.tripType !== "one-way"
-              ? selectedFlight?.Fair?.BaseFair * 2
-              : selectedFlight?.Fair?.BaseFair}
+              ? selectedFlight?.Fare?.BaseFare
+                ? selectedFlight?.Fare?.BaseFare * 2
+                : 0
+              : selectedFlight?.Fare?.BaseFare}
           </span>
         </h6>
       </div>

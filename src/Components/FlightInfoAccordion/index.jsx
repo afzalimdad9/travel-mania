@@ -22,9 +22,12 @@ const FlightInfoAccordion = ({ isReturn, continueState, setContinueState }) => {
     router.push("/bagging");
   }
 
+  let hasReturn = selectedFlight?.Segments?.length > 1;
   let segments =
     (isReturn
-      ? selectedFlight?.Segments?.[0]?.reverse()
+      ? !hasReturn
+        ? selectedFlight?.Segments?.[0]?.reverse()
+        : selectedFlight?.Segments?.[1]
       : selectedFlight?.Segments?.[0]) || [];
 
   let firstSegment = segments?.[0];
@@ -47,13 +50,13 @@ const FlightInfoAccordion = ({ isReturn, continueState, setContinueState }) => {
           </span>
           <p>
             {
-              firstSegment?.[!isReturn ? "Origin" : "Destination"]?.Airport
-                ?.CityName
+              firstSegment?.[!isReturn || hasReturn ? "Origin" : "Destination"]
+                ?.Airport?.CityName
             }{" "}
             ({isReturn ? flightInfo?.to : flightInfo?.from}) -
             {
-              lastSegment?.[isReturn ? "Origin" : "Destination"]?.Airport
-                ?.CityName
+              lastSegment?.[!isReturn || hasReturn ? "Destination" : "Origin"]
+                ?.Airport?.CityName
             }{" "}
             ({!isReturn ? flightInfo?.to : flightInfo?.from})
           </p>
@@ -70,6 +73,7 @@ const FlightInfoAccordion = ({ isReturn, continueState, setContinueState }) => {
             SegmentSeats={selectedFlight?.SSR?.SeatDynamic?.[0]?.SegmentSeat?.[
               idx
             ]?.RowSeats?.map((s) => s.Seats)?.flat()}
+            hasReturn={hasReturn}
             segment={segment}
             flightInfo={flightInfo}
             isReturn={isReturn}

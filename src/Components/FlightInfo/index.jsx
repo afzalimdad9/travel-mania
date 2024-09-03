@@ -70,6 +70,11 @@ const FlightCard = (props) => {
     }
   }
 
+  let hasReturn = (props?.Segments || []).length > 0;
+  let returnSegment = hasReturn
+    ? props?.Segments?.[1] || []
+    : props?.Segments?.[0] || [];
+
   return (
     <Container
       fluid
@@ -137,15 +142,26 @@ const FlightCard = (props) => {
           <hr />
           {tripType !== "one-way" && (
             <>
-              {(props?.Segments?.[0] || []).reverse().map((seg, idx) => (
+              {returnSegment.map((seg, idx) => (
                 <Row className="align-items-center" key={idx}>
                   <Col>
                     <h5 className="mb-0">
-                      {seg?.Destination?.ArrTime?.split("T")?.[1]}
+                      {
+                        seg?.[!hasReturn ? "Destination" : "Origin"]?.[
+                          !hasReturn ? "ArrTime" : "DepTime"
+                        ]?.split("T")?.[1]
+                      }
                     </h5>
                     <p className="text-primary">
-                      {seg?.Destination?.Airport?.CityName},{" "}
-                      {seg?.Destination?.Airport?.CountryName}
+                      {
+                        seg?.[!hasReturn ? "Destination" : "Origin"]?.Airport
+                          ?.CityName
+                      }
+                      ,{" "}
+                      {
+                        seg?.[!hasReturn ? "Destination" : "Origin"]?.Airport
+                          ?.CountryName
+                      }
                     </p>
                   </Col>
                   <Col xs="auto" className="text-center">
@@ -175,11 +191,22 @@ const FlightCard = (props) => {
                   </Col>
                   <Col>
                     <h5 className="mb-0">
-                      {seg?.Origin?.DepTime?.split("T")?.[1]}
+                      {
+                        seg?.[hasReturn ? "Destination" : "Origin"]?.[
+                          hasReturn ? "ArrTime" : "DepTime"
+                        ]?.split("T")?.[1]
+                      }
                     </h5>
                     <p className="text-primary">
-                      {seg?.Origin?.Airport?.CityName},{" "}
-                      {seg?.Origin?.Airport?.CountryName}
+                      {
+                        seg?.[hasReturn ? "Destination" : "Origin"]?.Airport
+                          ?.CityName
+                      }
+                      ,{" "}
+                      {
+                        seg?.[hasReturn ? "Destination" : "Origin"]?.Airport
+                          ?.CountryName
+                      }
                     </p>
                   </Col>
                 </Row>
