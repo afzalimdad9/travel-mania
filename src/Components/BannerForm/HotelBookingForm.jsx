@@ -6,8 +6,10 @@ import { Button, Col, Dropdown, Form, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { toast } from "react-toastify";
 import { formatDate } from "../../utils";
+import { Loading } from "../Loading";
 
 const HotelBookingForm = () => {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [formData, setFormData] = useState({
     checkInDate: null,
@@ -75,6 +77,7 @@ const HotelBookingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setLoading(true);
       const searchPayload = {
         CheckIn: formatDate(formData.checkInDate),
         CheckOut: formatDate(formData.checkoutDate),
@@ -127,6 +130,8 @@ const HotelBookingForm = () => {
       } catch (error) {
         toast.error("Error during hotel search. Please try again.");
         console.error("Error during hotel search:", error);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -285,8 +290,19 @@ const HotelBookingForm = () => {
               </Button>
             </Col>
             <Col md="auto">
-              <Button type="submit" className="btn-show-flights">
-                Show Results
+              <Button
+                disabled={loading}
+                type="submit"
+                className="btn-show-flights"
+              >
+                {loading ? (
+                  <>
+                    <Loading />
+                    Loading
+                  </>
+                ) : (
+                  "Show Results"
+                )}
               </Button>
             </Col>
           </Row>

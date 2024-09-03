@@ -8,6 +8,7 @@ import { authenticate } from "../../pages/api/flight";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { useFlightContext } from "../../context/FlightDataContext";
+import { Loading } from "../Loading";
 
 const FlightBookingForm = () => {
   const [formData, setFormData] = useState({
@@ -26,6 +27,7 @@ const FlightBookingForm = () => {
   });
   const router = useRouter();
   const { setFlights } = useFlightContext();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (router.query.tripType) {
@@ -140,6 +142,7 @@ const FlightBookingForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setLoading(true);
       const authResponse = await authenticate();
 
       if (!authResponse) {
@@ -225,6 +228,8 @@ const FlightBookingForm = () => {
       } catch (error) {
         toast.error("Error during flight search. Please try again.");
         console.error("Error during flight search:", error);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -441,8 +446,19 @@ const FlightBookingForm = () => {
               </Button>
             </Col>
             <Col md="auto">
-              <Button type="submit" className="btn-show-flights">
-                Show Flights
+              <Button
+                disabled={loading}
+                type="submit"
+                className="btn-show-flights"
+              >
+                {loading ? (
+                  <>
+                    <Loading />
+                    Loading
+                  </>
+                ) : (
+                  "Show Flights"
+                )}
               </Button>
             </Col>
           </Row>
