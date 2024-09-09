@@ -1,10 +1,10 @@
 import Head from "next/head";
 import Layout from "../layout/index";
 
-import BannerForm from "../Components/BannerForm/BannerForm";
 import VisaBanner from "../Components/VisaBanner";
-import FlightStats from "../Components/FlightStats";
-import AllFlights from "../Components/AllFlights";
+import VisaChange from "../Components/VisaChange";
+import ExtendVisa from "../Components/ExtendVisa";
+import Faq from "../Components/Faq";
 
 const visa = () => {
   return (
@@ -17,6 +17,9 @@ const visa = () => {
       </Head>
       <Layout>
         <VisaBanner />
+        <VisaChange />
+        <ExtendVisa />
+        {/* <Faq /> */}
       </Layout>
     </>
   );
