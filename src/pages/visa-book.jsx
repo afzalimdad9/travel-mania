@@ -4,7 +4,6 @@ import Layout from "../layout/index";
 import VisaBanner from "../Components/VisaBanner";
 import VisaChange from "../Components/VisaChange";
 import ExtendVisa from "../Components/ExtendVisa";
-import Faq from "../Components/Faq";
 
 const visa = () => {
   return (
@@ -19,7 +18,6 @@ const visa = () => {
         <VisaBanner />
         <VisaChange />
         <ExtendVisa />
-        <Faq />
       </Layout>
     </>
   );
